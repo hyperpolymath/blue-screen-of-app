@@ -1,0 +1,437 @@
+// SPDX-License-Identifier: AGPL-3.0-or-later
+= Blue Screen of App - Testing Report
+:toc:
+:toc-placement: preamble
+:icons: font
+:sectanchors:
+:source-highlighter: highlight.js
+
+== Executive Summary
+
+[cols="1,3"]
+|===
+| **Report Date** | 2025-12-29
+| **Project** | Blue Screen of App
+| **Version** | 2.0.0
+| **Runtime** | Deno 1.45.0
+| **Test Framework** | Deno Test (native)
+| **Overall Status** | PASS
+|===
+
+=== Test Results Overview
+
+[cols="2,1,1,1,1"]
+|===
+| Category | Total | Passed | Failed | Skipped
+
+| Unit Tests
+| 18
+| 18
+| 0
+| 0
+
+| Integration Tests
+| 22
+| 22
+| 0
+| 0
+
+| **TOTAL**
+| **40**
+| **40**
+| **0**
+| **0**
+|===
+
+=== Code Coverage Summary
+
+[cols="2,1,1"]
+|===
+| File | Branch % | Line %
+
+| Analytics.bs.js
+| 100.0%
+| 94.9%
+
+| ErrorMessages.bs.js
+| 75.0%
+| 98.9%
+
+| **All Files**
+| **83.3%**
+| **97.4%**
+|===
+
+== Testing Environment
+
+=== System Configuration
+
+* **Operating System**: Linux (Fedora 43)
+* **Architecture**: x86_64
+* **Deno Version**: 1.45.0
+* **V8 Version**: 12.7.224.12
+* **TypeScript Version**: 5.5.2
+
+=== Test Dependencies
+
+[source,javascript]
+----
+import { assertEquals, assertExists, assert } from "https://deno.land/std@0.208.0/assert/mod.ts";
+----
+
+== Issues Found and Fixed
+
+=== Issue #1: Node.js/Jest Tests Incompatible with Deno
+
+**Severity**: Critical
+
+**Description**: The original test files were written for Node.js using Jest and CommonJS require syntax:
+[source,javascript]
+----
+const request = require('supertest');
+const Analytics = require('../../src/utils/analytics');
+jest.mock('../../src/config', () => ({...}));
+----
+
+**Resolution**: Rewrote all tests to use Deno's native test framework with ES modules:
+[source,javascript]
+----
+import { assertEquals, assertExists, assert } from "https://deno.land/std@0.208.0/assert/mod.ts";
+import { trackVisit, trackApiCall, ... } from "../../src/Analytics.bs.js";
+
+Deno.test("Test name", () => {
+  // Test implementation
+});
+----
+
+**Files Modified**:
+
+* `/var/home/hyper/repos/blue-screen-of-app/tests/unit/analytics.test.js`
+* `/var/home/hyper/repos/blue-screen-of-app/tests/unit/errorMessages.test.js`
+* `/var/home/hyper/repos/blue-screen-of-app/tests/integration/api.test.js`
+* `/var/home/hyper/repos/blue-screen-of-app/tests/integration/bsod.test.js`
+
+=== Issue #2: Lint Errors in server.js
+
+**Severity**: Medium
+
+**Description**: The server.js file had two lint errors:
+
+1. **require-await**: Async function without await expression
+2. **no-unused-vars**: Unused `url` parameter
+
+Original code:
+[source,javascript]
+----
+const generateQR = async (url) => {
+  return null;
+};
+
+const handler = async (req) => {
+  // No await expressions
+};
+----
+
+**Resolution**: Removed unnecessary async keywords and prefixed unused parameter:
+[source,javascript]
+----
+const generateQR = (_url) => {
+  return null;
+};
+
+const handler = (req) => {
+  // Synchronous handler
+};
+----
+
+**Files Modified**:
+
+* `/var/home/hyper/repos/blue-screen-of-app/src/server.js`
+
+=== Issue #3: Missing .tool-versions
+
+**Severity**: Low
+
+**Description**: The project lacked a `.tool-versions` file for asdf version management, causing "No version is set for command deno" errors.
+
+**Resolution**: Created `.tool-versions` file with Deno version specification:
+[source]
+----
+deno 1.45.0
+----
+
+**Files Created**:
+
+* `/var/home/hyper/repos/blue-screen-of-app/.tool-versions`
+
+== Unit Tests
+
+=== Analytics Module Tests
+
+[source]
+----
+tests/unit/analytics.test.js
+----
+
+[cols="1,3,1"]
+|===
+| # | Test Name | Status
+
+| 1
+| trackVisit should increment total visits
+| PASS
+
+| 2
+| trackVisit should track style views
+| PASS
+
+| 3
+| trackVisit should track error code views
+| PASS
+
+| 4
+| trackVisit should track custom messages
+| PASS
+
+| 5
+| trackApiCall should increment API calls
+| PASS
+
+| 6
+| getStatsObject should return complete summary
+| PASS
+
+| 7
+| getUptime should return positive number
+| PASS
+
+| 8
+| resetStats should reset all counters
+| PASS
+|===
+
+=== ErrorMessages Module Tests
+
+[source]
+----
+tests/unit/errorMessages.test.js
+----
+
+[cols="1,3,1"]
+|===
+| # | Test Name | Status
+
+| 1
+| getRandomErrorJS should return valid error object
+| PASS
+
+| 2
+| getRandomErrorJS should return percentage between 0 and 100
+| PASS
+
+| 3
+| getRandomErrorJS should return valid stop code from list
+| PASS
+
+| 4
+| getRandomErrorJS should return different errors on multiple calls
+| PASS
+
+| 5
+| getErrorByCodeJS should return correct error for valid code
+| PASS
+
+| 6
+| getErrorByCodeJS should handle lowercase and dashes
+| PASS
+
+| 7
+| getErrorByCodeJS should return null for invalid code
+| PASS
+
+| 8
+| getErrorByCodeJS should return description for known codes
+| PASS
+
+| 9
+| getAllStopCodes should return humorous error codes
+| PASS
+
+| 10
+| getAllStopCodes should return non-empty array
+| PASS
+|===
+
+== Integration Tests
+
+=== API Routes Tests
+
+[source]
+----
+tests/integration/api.test.js
+----
+
+[cols="1,3,1"]
+|===
+| # | Test Name | Status
+
+| 1
+| GET /api/error should return random error data
+| PASS
+
+| 2
+| GET /api/error/:code should return specific error
+| PASS
+
+| 3
+| GET /api/error/:code should handle lowercase codes
+| PASS
+
+| 4
+| GET /api/error/:code should return 404 for invalid code
+| PASS
+
+| 5
+| GET /api/codes should return list of error codes
+| PASS
+
+| 6
+| GET /api/codes should include humorous codes
+| PASS
+
+| 7
+| GET /api/styles should return list of available styles
+| PASS
+
+| 8
+| GET /api/analytics should return analytics summary
+| PASS
+
+| 9
+| GET /api/analytics should track API calls
+| PASS
+
+| 10
+| GET /api/health should return health status
+| PASS
+
+| 11
+| POST /api/analytics/reset should reset analytics
+| PASS
+
+| 12
+| GET /unknown-route should return 404
+| PASS
+|===
+
+=== BSOD Routes Tests
+
+[source]
+----
+tests/integration/bsod.test.js
+----
+
+[cols="1,3,1"]
+|===
+| # | Test Name | Status
+
+| 1
+| GET / should render BSOD page with default style
+| PASS
+
+| 2
+| GET /?style=win10 should accept style parameter
+| PASS
+
+| 3
+| GET /?code=COFFEE_NOT_FOUND should accept custom error code
+| PASS
+
+| 4
+| GET /?message=Custom should accept custom message
+| PASS
+
+| 5
+| GET /?technical=Custom should accept custom technical detail
+| PASS
+
+| 6
+| GET /?percentage=75 should accept custom percentage
+| PASS
+
+| 7
+| GET / with multiple parameters should handle them all
+| PASS
+
+| 8
+| GET /random should redirect to a style
+| PASS
+
+| 9
+| GET /random should redirect to different styles
+| PASS
+
+| 10
+| GET /unknown-route should return 404
+| PASS
+|===
+
+== Performance Metrics
+
+=== Test Execution Time
+
+[cols="2,1"]
+|===
+| Test Suite | Duration
+
+| Unit Tests (analytics.test.js)
+| ~10ms
+
+| Unit Tests (errorMessages.test.js)
+| ~10ms
+
+| Integration Tests (api.test.js)
+| ~1000ms
+
+| Integration Tests (bsod.test.js)
+| ~300ms
+
+| **Total**
+| **~1500ms**
+|===
+
+== Recommendations
+
+=== Short-term
+
+1. **Add SPDX headers to source files**: The ReScript-generated `.bs.js` files lack SPDX license headers. Consider adding them during build or using a post-processing script.
+
+2. **Increase branch coverage**: The ErrorMessages module has 75% branch coverage. Add tests for edge cases to improve coverage.
+
+3. **Port configuration**: The server defaults to port 443 which requires root privileges. Consider making the port configurable via environment variable for development.
+
+=== Long-term
+
+1. **ReScript source files**: The project references ReScript but `.res` source files are missing. Either add the ReScript sources or document that the `.bs.js` files are the primary sources.
+
+2. **End-to-end tests**: Add browser-based E2E tests using Deno with Puppeteer or Playwright to verify the visual rendering of BSOD pages.
+
+3. **Performance benchmarks**: Add Deno benchmarks to track response time and throughput.
+
+== Conclusion
+
+The Blue Screen of App project is in good health with a comprehensive test suite achieving 97.4% line coverage and 83.3% branch coverage. All 40 tests pass successfully across unit and integration test categories.
+
+Key accomplishments in this testing session:
+
+* Migrated all tests from Jest/Node.js to Deno's native test framework
+* Fixed lint issues in the main server file
+* Created proper version management with `.tool-versions`
+* Verified all API endpoints function correctly
+* Confirmed BSOD page rendering with various style options
+
+The project is ready for deployment with confidence in its stability and correctness.
+
+---
+
+_Report generated by automated testing session on 2025-12-29_
