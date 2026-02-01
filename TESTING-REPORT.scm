@@ -1,4 +1,4 @@
-;; SPDX-License-Identifier: AGPL-3.0-or-later
+;; SPDX-License-Identifier: PMPL-1.0-or-later
 ;; TESTING-REPORT.scm - Blue Screen of App Testing Report
 ;; Generated: 2025-12-29
 ;; Format: Guile Scheme S-expression

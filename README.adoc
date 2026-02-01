@@ -1,6 +1,6 @@
 = Blue Screen of App
 
-image:https://img.shields.io/badge/license-Palimpsest--MPL--1.0-purple.svg[Palimpsest-MPL-1.0,link="https://github.com/hyperpolymath/palimpsest-license"] image:https://img.shields.io/badge/philosophy-Palimpsest-purple.svg[Palimpsest,link="https://github.com/hyperpolymath/palimpsest-licence"]
+image:https://img.shields.io/badge/License-PMPL--1.0-blue.svg[License: PMPL-1.0,link="https://github.com/hyperpolymath/palimpsest-license"]
 :toc:
 :icons: font
 
@@ -9,7 +9,7 @@ _Does exactly what it says on the tin... or screen._
 
 A humorous web app displaying authentic Blue Screen of Death errors. Built with *Deno*, *ReScript*, and *Podman*.
 
-image:https://img.shields.io/badge/License-GPL--3.0--or--Palimpsest--0.8-blue.svg[License,link=LICENSE]
+image:https://img.shields.io/badge/License-PMPL--1.0-blue.svg[License: PMPL-1.0,link="https://github.com/hyperpolymath/palimpsest-license"]
 image:https://img.shields.io/badge/deno-2.0-brightgreen[Deno]
 image:https://img.shields.io/badge/RSR-Bronze-orange[RSR]
 

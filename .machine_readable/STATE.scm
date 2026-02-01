@@ -1,4 +1,4 @@
-;; SPDX-License-Identifier: AGPL-3.0-or-later
+;; SPDX-License-Identifier: PMPL-1.0-or-later
 ;; STATE.scm - Project state for blue-screen-of-app
 ;; Media-Type: application/vnd.state+scm
 
@@ -7,7 +7,7 @@
     (version "0.0.1")
     (schema-version "1.0")
     (created "2026-01-03")
-    (updated "2026-01-03")
+    (updated "2026-02-01")
     (project "blue-screen-of-app")
     (repo "github.com/hyperpolymath/blue-screen-of-app"))
 
