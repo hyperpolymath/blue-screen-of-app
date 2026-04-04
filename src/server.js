@@ -1,15 +1,15 @@
 // Blue Screen of App - Deno Server (Minimal JavaScript)
 // Imports compiled ReScript modules for business logic
 
-import { getRandomErrorJS, getErrorByCodeJS, getAllStopCodes } from './ErrorMessages.bs.js';
-import { trackVisit, trackApiCall, getStatsObject, resetStats, getUptime } from './Analytics.bs.js';
+import { getAllStopCodes, getErrorByCodeJS, getRandomErrorJS } from './ErrorMessages.bs.js';
+import { getStatsObject, getUptime, resetStats, trackApiCall, trackVisit } from './Analytics.bs.js';
 
 // Load configuration from Nickel (via JSON export)
 const configPath = new URL('../config.json', import.meta.url);
 let config = {
   server: { port: 443, host: '0.0.0.0' },
   app: { name: 'Blue Screen of App', url: 'https://localhost' },
-  features: { qrCodes: true, defaultQrUrl: 'https://github.com/Hyperpolymath/blue-screen-of-app' }
+  features: { qrCodes: true, defaultQrUrl: 'https://github.com/Hyperpolymath/blue-screen-of-app' },
 };
 
 try {
@@ -41,7 +41,7 @@ const renderBSOD = (style, errorData, qrCode) => {
     win10: { bg: '#0178D4', font: "'Segoe UI', sans-serif", emoji: '😞' },
     win11: { bg: '#0067C0', font: "'Segoe UI Variable', 'Segoe UI', sans-serif", emoji: '😞' },
     win7: { bg: '#00579e', font: "'Lucida Console', monospace", emoji: '' },
-    winxp: { bg: '#0000AA', font: "'Perfect DOS VGA 437', 'Courier New', monospace", emoji: '' }
+    winxp: { bg: '#0000AA', font: "'Perfect DOS VGA 437', 'Courier New', monospace", emoji: '' },
   };
 
   const cfg = styleConfig[style] || styleConfig.win10;
@@ -78,7 +78,7 @@ const renderBSOD = (style, errorData, qrCode) => {
 };
 
 // Generate QR code (minimal implementation, or skip if complex)
-const generateQR = async (url) => {
+const generateQR = (_url) => {
   // For now, return null - can implement WASM QR generator later
   // This keeps JS minimal as requested
   return null;
@@ -93,7 +93,7 @@ const getQueryParams = (url) => {
     message: params.get('message'),
     technical: params.get('technical'),
     qr: params.get('qr'),
-    percentage: params.get('percentage')
+    percentage: params.get('percentage'),
   };
 };
 
@@ -131,36 +131,45 @@ const handler = async (req) => {
   // Health check
   if (path === '/api/health') {
     trackApiCall();
-    return new Response(JSON.stringify({
-      status: 'ok',
-      uptime: getUptime(),
-      timestamp: new Date().toISOString()
-    }), {
-      status: 200,
-      headers: { ...headers, 'Content-Type': 'application/json' }
-    });
+    return new Response(
+      JSON.stringify({
+        status: 'ok',
+        uptime: getUptime(),
+        timestamp: new Date().toISOString(),
+      }),
+      {
+        status: 200,
+        headers: { ...headers, 'Content-Type': 'application/json' },
+      },
+    );
   }
 
   // Get all error codes
   if (path === '/api/codes') {
     trackApiCall();
-    return new Response(JSON.stringify({
-      codes: getAllStopCodes()
-    }), {
-      status: 200,
-      headers: { ...headers, 'Content-Type': 'application/json' }
-    });
+    return new Response(
+      JSON.stringify({
+        codes: getAllStopCodes(),
+      }),
+      {
+        status: 200,
+        headers: { ...headers, 'Content-Type': 'application/json' },
+      },
+    );
   }
 
   // Get all styles
   if (path === '/api/styles') {
     trackApiCall();
-    return new Response(JSON.stringify({
-      styles: styles
-    }), {
-      status: 200,
-      headers: { ...headers, 'Content-Type': 'application/json' }
-    });
+    return new Response(
+      JSON.stringify({
+        styles: styles,
+      }),
+      {
+        status: 200,
+        headers: { ...headers, 'Content-Type': 'application/json' },
+      },
+    );
   }
 
   // Get analytics
@@ -168,7 +177,7 @@ const handler = async (req) => {
     trackApiCall();
     return new Response(JSON.stringify(getStatsObject()), {
       status: 200,
-      headers: { ...headers, 'Content-Type': 'application/json' }
+      headers: { ...headers, 'Content-Type': 'application/json' },
     });
   }
 
@@ -178,7 +187,7 @@ const handler = async (req) => {
     resetStats();
     return new Response(JSON.stringify({ message: 'Analytics reset' }), {
       status: 200,
-      headers: { ...headers, 'Content-Type': 'application/json' }
+      headers: { ...headers, 'Content-Type': 'application/json' },
     });
   }
 
@@ -188,7 +197,7 @@ const handler = async (req) => {
     const error = getRandomErrorJS();
     return new Response(JSON.stringify(error), {
       status: 200,
-      headers: { ...headers, 'Content-Type': 'application/json' }
+      headers: { ...headers, 'Content-Type': 'application/json' },
     });
   }
 
@@ -201,13 +210,13 @@ const handler = async (req) => {
     if (!error) {
       return new Response(JSON.stringify({ error: 'Error code not found' }), {
         status: 404,
-        headers: { ...headers, 'Content-Type': 'application/json' }
+        headers: { ...headers, 'Content-Type': 'application/json' },
       });
     }
 
     return new Response(JSON.stringify(error), {
       status: 200,
-      headers: { ...headers, 'Content-Type': 'application/json' }
+      headers: { ...headers, 'Content-Type': 'application/json' },
     });
   }
 
@@ -251,14 +260,14 @@ const handler = async (req) => {
 
     return new Response(html, {
       status: 200,
-      headers: { ...headers, 'Content-Type': 'text/html; charset=utf-8' }
+      headers: { ...headers, 'Content-Type': 'text/html; charset=utf-8' },
     });
   }
 
   // 404
   return new Response(JSON.stringify({ error: 'Not found' }), {
     status: 404,
-    headers: { ...headers, 'Content-Type': 'application/json' }
+    headers: { ...headers, 'Content-Type': 'application/json' },
   });
 };
 

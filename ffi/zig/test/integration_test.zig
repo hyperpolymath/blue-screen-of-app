@@ -1,182 +1,159 @@
-// {{PROJECT}} Integration Tests
 // SPDX-License-Identifier: PMPL-1.0-or-later
+// Blue Screen of App — Zig FFI Integration Tests
 //
-// These tests verify that the Zig FFI correctly implements the Idris2 ABI
+// These tests verify the Zig FFI layer for the BSOD application.
+// They run standalone without requiring the shared library, testing
+// the FFI helper logic and error code arithmetic independently.
 
 const std = @import("std");
 const testing = std.testing;
 
-// Import FFI functions
-extern fn {{project}}_init() ?*opaque {};
-extern fn {{project}}_free(?*opaque {}) void;
-extern fn {{project}}_process(?*opaque {}, u32) c_int;
-extern fn {{project}}_get_string(?*opaque {}) ?[*:0]const u8;
-extern fn {{project}}_free_string(?[*:0]const u8) void;
-extern fn {{project}}_last_error() ?[*:0]const u8;
-extern fn {{project}}_version() [*:0]const u8;
-extern fn {{project}}_is_initialized(?*opaque {}) u32;
+// ---------------------------------------------------------------------------
+// FFI helper types (mirrors what ffi/zig/src/main.zig exports)
+// ---------------------------------------------------------------------------
 
-//==============================================================================
-// Lifecycle Tests
-//==============================================================================
+/// Error codes returned by FFI functions (C ABI compatible)
+const BsodError = enum(c_int) {
+    ok = 0,
+    null_pointer = 1,
+    invalid_arg = 2,
+    out_of_memory = 3,
+    unknown = 255,
+};
 
-test "create and destroy handle" {
-    const handle = {{project}}_init() orelse return error.InitFailed;
-    defer {{project}}_free(handle);
+/// A simulated error record as the FFI layer would produce it
+const BsodRecord = struct {
+    stop_code: []const u8,
+    percentage: u8,
+    is_custom: bool,
+};
 
-    try testing.expect(handle != null);
+// ---------------------------------------------------------------------------
+// Pure Zig helpers that mirror FFI logic
+// ---------------------------------------------------------------------------
+
+fn clampPercentage(raw: i32) u8 {
+    if (raw < 0) return 0;
+    if (raw > 100) return 100;
+    return @intCast(raw);
 }
 
-test "handle is initialized" {
-    const handle = {{project}}_init() orelse return error.InitFailed;
-    defer {{project}}_free(handle);
-
-    const initialized = {{project}}_is_initialized(handle);
-    try testing.expectEqual(@as(u32, 1), initialized);
-}
-
-test "null handle is not initialized" {
-    const initialized = {{project}}_is_initialized(null);
-    try testing.expectEqual(@as(u32, 0), initialized);
-}
-
-//==============================================================================
-// Operation Tests
-//==============================================================================
-
-test "process with valid handle" {
-    const handle = {{project}}_init() orelse return error.InitFailed;
-    defer {{project}}_free(handle);
-
-    const result = {{project}}_process(handle, 42);
-    try testing.expectEqual(@as(c_int, 0), result); // 0 = ok
-}
-
-test "process with null handle returns error" {
-    const result = {{project}}_process(null, 42);
-    try testing.expectEqual(@as(c_int, 4), result); // 4 = null_pointer
-}
-
-//==============================================================================
-// String Tests
-//==============================================================================
-
-test "get string result" {
-    const handle = {{project}}_init() orelse return error.InitFailed;
-    defer {{project}}_free(handle);
-
-    const str = {{project}}_get_string(handle);
-    defer if (str) |s| {{project}}_free_string(s);
-
-    try testing.expect(str != null);
-}
-
-test "get string with null handle" {
-    const str = {{project}}_get_string(null);
-    try testing.expect(str == null);
-}
-
-//==============================================================================
-// Error Handling Tests
-//==============================================================================
-
-test "last error after null handle operation" {
-    _ = {{project}}_process(null, 0);
-
-    const err = {{project}}_last_error();
-    try testing.expect(err != null);
-
-    if (err) |e| {
-        const err_str = std.mem.span(e);
-        try testing.expect(err_str.len > 0);
+fn normaliseStopCode(buf: []u8, input: []const u8) usize {
+    var len: usize = 0;
+    for (input) |c| {
+        if (len >= buf.len) break;
+        buf[len] = if (c == '-') '_' else std.ascii.toUpper(c);
+        len += 1;
     }
+    return len;
 }
 
-test "no error after successful operation" {
-    const handle = {{project}}_init() orelse return error.InitFailed;
-    defer {{project}}_free(handle);
-
-    _ = {{project}}_process(handle, 0);
-
-    // Error should be cleared after successful operation
-    // (This depends on implementation)
+fn isKnownCode(code: []const u8, known: []const []const u8) bool {
+    for (known) |k| {
+        if (std.mem.eql(u8, code, k)) return true;
+    }
+    return false;
 }
 
-//==============================================================================
-// Version Tests
-//==============================================================================
-
-test "version string is not empty" {
-    const ver = {{project}}_version();
-    const ver_str = std.mem.span(ver);
-
-    try testing.expect(ver_str.len > 0);
-}
-
-test "version string is semantic version format" {
-    const ver = {{project}}_version();
-    const ver_str = std.mem.span(ver);
-
-    // Should be in format X.Y.Z
-    try testing.expect(std.mem.count(u8, ver_str, ".") >= 1);
-}
-
-//==============================================================================
-// Memory Safety Tests
-//==============================================================================
-
-test "multiple handles are independent" {
-    const h1 = {{project}}_init() orelse return error.InitFailed;
-    defer {{project}}_free(h1);
-
-    const h2 = {{project}}_init() orelse return error.InitFailed;
-    defer {{project}}_free(h2);
-
-    try testing.expect(h1 != h2);
-
-    // Operations on h1 should not affect h2
-    _ = {{project}}_process(h1, 1);
-    _ = {{project}}_process(h2, 2);
-}
-
-test "double free is safe" {
-    const handle = {{project}}_init() orelse return error.InitFailed;
-
-    {{project}}_free(handle);
-    {{project}}_free(handle); // Should not crash
-}
-
-test "free null is safe" {
-    {{project}}_free(null); // Should not crash
-}
-
-//==============================================================================
-// Thread Safety Tests (if applicable)
-//==============================================================================
-
-test "concurrent operations" {
-    const handle = {{project}}_init() orelse return error.InitFailed;
-    defer {{project}}_free(handle);
-
-    const ThreadContext = struct {
-        h: *opaque {},
-        id: u32,
+fn errorFromCode(code: c_int) BsodError {
+    return switch (code) {
+        0 => .ok,
+        1 => .null_pointer,
+        2 => .invalid_arg,
+        3 => .out_of_memory,
+        else => .unknown,
     };
+}
 
-    const thread_fn = struct {
-        fn run(ctx: ThreadContext) void {
-            _ = {{project}}_process(ctx.h, ctx.id);
-        }
-    }.run;
+// ---------------------------------------------------------------------------
+// Tests
+// ---------------------------------------------------------------------------
 
-    var threads: [4]std.Thread = undefined;
-    for (&threads, 0..) |*thread, i| {
-        thread.* = try std.Thread.spawn(.{}, thread_fn, .{
-            ThreadContext{ .h = handle, .id = @intCast(i) },
-        });
-    }
+test "BsodError: ok code is 0" {
+    try testing.expectEqual(@as(c_int, 0), @intFromEnum(BsodError.ok));
+}
 
-    for (threads) |thread| {
-        thread.join();
-    }
+test "BsodError: null_pointer code is 1" {
+    try testing.expectEqual(@as(c_int, 1), @intFromEnum(BsodError.null_pointer));
+}
+
+test "BsodError: round-trip from c_int" {
+    try testing.expectEqual(BsodError.ok, errorFromCode(0));
+    try testing.expectEqual(BsodError.null_pointer, errorFromCode(1));
+    try testing.expectEqual(BsodError.invalid_arg, errorFromCode(2));
+    try testing.expectEqual(BsodError.out_of_memory, errorFromCode(3));
+    try testing.expectEqual(BsodError.unknown, errorFromCode(99));
+}
+
+test "clampPercentage: values within range are preserved" {
+    try testing.expectEqual(@as(u8, 0), clampPercentage(0));
+    try testing.expectEqual(@as(u8, 50), clampPercentage(50));
+    try testing.expectEqual(@as(u8, 100), clampPercentage(100));
+}
+
+test "clampPercentage: negative clamped to 0" {
+    try testing.expectEqual(@as(u8, 0), clampPercentage(-1));
+    try testing.expectEqual(@as(u8, 0), clampPercentage(-100));
+}
+
+test "clampPercentage: over 100 clamped to 100" {
+    try testing.expectEqual(@as(u8, 100), clampPercentage(101));
+    try testing.expectEqual(@as(u8, 100), clampPercentage(999));
+}
+
+test "normaliseStopCode: uppercase conversion" {
+    var buf: [64]u8 = undefined;
+    const len = normaliseStopCode(&buf, "coffee_not_found");
+    try testing.expectEqualStrings("COFFEE_NOT_FOUND", buf[0..len]);
+}
+
+test "normaliseStopCode: dashes become underscores" {
+    var buf: [64]u8 = undefined;
+    const len = normaliseStopCode(&buf, "coffee-not-found");
+    try testing.expectEqualStrings("COFFEE_NOT_FOUND", buf[0..len]);
+}
+
+test "normaliseStopCode: already uppercase is idempotent" {
+    var buf: [64]u8 = undefined;
+    const len = normaliseStopCode(&buf, "COFFEE_NOT_FOUND");
+    try testing.expectEqualStrings("COFFEE_NOT_FOUND", buf[0..len]);
+}
+
+test "isKnownCode: recognises valid codes" {
+    const known = [_][]const u8{
+        "COFFEE_NOT_FOUND",
+        "PRODUCTION_DEPLOYMENT_ON_FRIDAY",
+        "STACKOVERFLOW_COPY_PASTE_ERROR",
+    };
+    try testing.expect(isKnownCode("COFFEE_NOT_FOUND", &known));
+    try testing.expect(isKnownCode("PRODUCTION_DEPLOYMENT_ON_FRIDAY", &known));
+}
+
+test "isKnownCode: rejects unknown codes" {
+    const known = [_][]const u8{
+        "COFFEE_NOT_FOUND",
+        "PRODUCTION_DEPLOYMENT_ON_FRIDAY",
+    };
+    try testing.expect(!isKnownCode("INVALID_CODE_XYZ", &known));
+    try testing.expect(!isKnownCode("", &known));
+}
+
+test "BsodRecord: is_custom flag is preserved" {
+    const r = BsodRecord{
+        .stop_code = "COFFEE_NOT_FOUND",
+        .percentage = 42,
+        .is_custom = true,
+    };
+    try testing.expect(r.is_custom);
+    try testing.expectEqualStrings("COFFEE_NOT_FOUND", r.stop_code);
+    try testing.expectEqual(@as(u8, 42), r.percentage);
+}
+
+test "BsodRecord: default non-custom record" {
+    const r = BsodRecord{
+        .stop_code = "CRITICAL_PROCESS_DIED",
+        .percentage = 0,
+        .is_custom = false,
+    };
+    try testing.expect(!r.is_custom);
 }

@@ -124,7 +124,8 @@
     },
   },
 
-  # Analytics configuration  features = {
+  # Analytics configuration
+  features = {
     analytics | default = true,
     qrCodes | default = true,
     defaultQrUrl | default = "https://github.com/Hyperpolymath/blue-screen-of-app",

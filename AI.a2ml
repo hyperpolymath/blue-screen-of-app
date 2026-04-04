@@ -1,0 +1,39 @@
+# SPDX-License-Identifier: PMPL-1.0-or-later
+# AI Manifest for blue-screen-of-app
+# A2ML (AI Markup Language) universal entry point for AI agents.
+
+[manifest]
+version = "1.0"
+repo = "blue-screen-of-app"
+owner = "hyperpolymath"
+purpose = "Humorous BSOD web application in Deno + ReScript"
+
+[canonical-locations]
+machine-readable = ".machine_readable/"
+source = "src/"
+tests = "tests/"
+abi = "src/abi/"
+ffi = "ffi/zig/"
+
+[critical-invariants]
+# Never place STATE.scm, META.scm, ECOSYSTEM.scm in repo root
+scm-files-in-machine-readable-only = true
+# Primary license
+license = "PMPL-1.0-or-later"
+# No TypeScript — use ReScript
+no-typescript = true
+# No Node.js — use Deno
+no-nodejs = true
+# Containerfile (not Dockerfile) via Podman
+container-tool = "podman"
+
+[structure]
+# Source: Deno + ReScript compiled to .bs.js
+# FFI: Zig (ffi/zig/)
+# ABI: Idris2 (src/abi/)
+# Config: Nickel (config.ncl)
+# Tests: Deno-native ESM tests in tests/
+
+[session]
+on-enter = "Read .machine_readable/STATE.scm for current project state"
+on-exit = "Update .machine_readable/STATE.scm with session progress"

@@ -1,124 +1,89 @@
-const Analytics = require('../../src/utils/analytics');
+// SPDX-License-Identifier: PMPL-1.0-or-later
+// Unit tests for Analytics module (Deno-native, ESM)
+import { assertEquals, assertGreaterOrEqual, assertObjectMatch } from "jsr:@std/assert";
+import {
+  trackVisit,
+  trackApiCall,
+  resetStats,
+  getStatsObject,
+  getUptime,
+} from "../../src/Analytics.bs.js";
 
-// Mock the config
-jest.mock('../../src/config', () => ({
-  features: {
-    analytics: true,
-  },
-}));
+Deno.test("Analytics: trackVisit increments totalVisits", () => {
+  resetStats();
+  trackVisit("win10", "COFFEE_NOT_FOUND", false);
+  const stats = getStatsObject();
+  assertEquals(stats.totalVisits, 1);
+  resetStats();
+});
 
-// Mock the logger
-jest.mock('../../src/utils/logger', () => ({
-  debug: jest.fn(),
-  info: jest.fn(),
-}));
+Deno.test("Analytics: trackVisit tracks style views", () => {
+  resetStats();
+  trackVisit("win10", "COFFEE_NOT_FOUND", false);
+  trackVisit("win10", "NPM_INSTALL_TIMEOUT", false);
+  trackVisit("winxp", "COFFEE_NOT_FOUND", false);
+  const stats = getStatsObject();
+  assertEquals(stats.styleViews["win10"], 2);
+  assertEquals(stats.styleViews["winxp"], 1);
+  resetStats();
+});
 
-describe('Analytics Utility', () => {
-  beforeEach(() => {
-    // Reset analytics before each test
-    Analytics.reset();
+Deno.test("Analytics: trackVisit tracks error code views", () => {
+  resetStats();
+  trackVisit("win10", "COFFEE_NOT_FOUND", false);
+  trackVisit("win10", "COFFEE_NOT_FOUND", false);
+  trackVisit("win10", "NPM_INSTALL_TIMEOUT", false);
+  const stats = getStatsObject();
+  assertEquals(stats.errorCodeViews["COFFEE_NOT_FOUND"], 2);
+  assertEquals(stats.errorCodeViews["NPM_INSTALL_TIMEOUT"], 1);
+  resetStats();
+});
+
+Deno.test("Analytics: trackVisit counts custom messages", () => {
+  resetStats();
+  trackVisit("win10", null, true);
+  trackVisit("win10", null, true);
+  trackVisit("win10", null, false);
+  const stats = getStatsObject();
+  assertEquals(stats.customMessages, 2);
+  resetStats();
+});
+
+Deno.test("Analytics: trackApiCall increments apiCalls", () => {
+  resetStats();
+  trackApiCall();
+  trackApiCall();
+  const stats = getStatsObject();
+  assertEquals(stats.apiCalls, 2);
+  resetStats();
+});
+
+Deno.test("Analytics: getStatsObject returns complete stats shape", () => {
+  resetStats();
+  trackVisit("win10", "COFFEE_NOT_FOUND", true);
+  trackApiCall();
+  const stats = getStatsObject();
+  assertObjectMatch(stats, {
+    totalVisits: 1,
+    apiCalls: 1,
+    customMessages: 1,
   });
+  resetStats();
+});
 
-  describe('trackVisit', () => {
-    test('should increment total visits', () => {
-      Analytics.trackVisit();
-      const summary = Analytics.getSummary();
+Deno.test("Analytics: getUptime returns non-negative value", () => {
+  const uptime = getUptime();
+  assertGreaterOrEqual(uptime, 0);
+});
 
-      expect(summary.totalVisits).toBe(1);
-    });
-
-    test('should track style views', () => {
-      Analytics.trackVisit('win10');
-      Analytics.trackVisit('win10');
-      Analytics.trackVisit('winxp');
-
-      const summary = Analytics.getSummary();
-
-      expect(summary.styleViews.win10).toBe(2);
-      expect(summary.styleViews.winxp).toBe(1);
-    });
-
-    test('should track error code views', () => {
-      Analytics.trackVisit('win10', 'COFFEE_NOT_FOUND');
-      Analytics.trackVisit('win10', 'COFFEE_NOT_FOUND');
-      Analytics.trackVisit('win10', 'NPM_INSTALL_TIMEOUT');
-
-      const summary = Analytics.getSummary();
-
-      expect(summary.errorCodeViews.COFFEE_NOT_FOUND).toBe(2);
-      expect(summary.errorCodeViews.NPM_INSTALL_TIMEOUT).toBe(1);
-    });
-
-    test('should track custom messages', () => {
-      Analytics.trackVisit('win10', null, true);
-      Analytics.trackVisit('win10', null, true);
-      Analytics.trackVisit('win10', null, false);
-
-      const summary = Analytics.getSummary();
-
-      expect(summary.customMessageCount).toBe(2);
-    });
-  });
-
-  describe('trackApiCall', () => {
-    test('should increment API calls', () => {
-      Analytics.trackApiCall();
-      Analytics.trackApiCall();
-
-      const summary = Analytics.getSummary();
-
-      expect(summary.apiCalls).toBe(2);
-    });
-  });
-
-  describe('getSummary', () => {
-    test('should return complete summary', () => {
-      Analytics.trackVisit('win10', 'COFFEE_NOT_FOUND', true);
-      Analytics.trackApiCall();
-
-      const summary = Analytics.getSummary();
-
-      expect(summary).toHaveProperty('totalVisits');
-      expect(summary).toHaveProperty('styleViews');
-      expect(summary).toHaveProperty('errorCodeViews');
-      expect(summary).toHaveProperty('customMessageCount');
-      expect(summary).toHaveProperty('apiCalls');
-      expect(summary).toHaveProperty('uptime');
-    });
-
-    test('should include uptime information', () => {
-      const summary = Analytics.getSummary();
-
-      expect(summary.uptime).toHaveProperty('ms');
-      expect(summary.uptime).toHaveProperty('seconds');
-      expect(summary.uptime).toHaveProperty('minutes');
-      expect(summary.uptime).toHaveProperty('hours');
-      expect(summary.uptime).toHaveProperty('human');
-    });
-
-    test('should have valid uptime values', () => {
-      const summary = Analytics.getSummary();
-
-      expect(summary.uptime.ms).toBeGreaterThanOrEqual(0);
-      expect(summary.uptime.seconds).toBeGreaterThanOrEqual(0);
-      expect(typeof summary.uptime.human).toBe('string');
-    });
-  });
-
-  describe('reset', () => {
-    test('should reset all counters', () => {
-      Analytics.trackVisit('win10', 'COFFEE_NOT_FOUND', true);
-      Analytics.trackApiCall();
-
-      Analytics.reset();
-
-      const summary = Analytics.getSummary();
-
-      expect(summary.totalVisits).toBe(0);
-      expect(summary.apiCalls).toBe(0);
-      expect(summary.customMessageCount).toBe(0);
-      expect(Object.keys(summary.styleViews).length).toBe(0);
-      expect(Object.keys(summary.errorCodeViews).length).toBe(0);
-    });
-  });
+Deno.test("Analytics: resetStats clears all counters", () => {
+  trackVisit("win10", "COFFEE_NOT_FOUND", true);
+  trackApiCall();
+  resetStats();
+  const stats = getStatsObject();
+  assertEquals(stats.totalVisits, 0);
+  assertEquals(stats.apiCalls, 0);
+  assertEquals(stats.customMessages, 0);
+  assertEquals(Object.keys(stats.styleViews).length, 0);
+  assertEquals(Object.keys(stats.errorCodeViews).length, 0);
 });

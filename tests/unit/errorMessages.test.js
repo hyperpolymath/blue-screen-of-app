@@ -1,90 +1,79 @@
-const { getRandomError, getErrorByCode, errorMessages } = require('../../src/utils/errorMessages');
+// SPDX-License-Identifier: PMPL-1.0-or-later
+// Unit tests for ErrorMessages module (Deno-native, ESM)
+import {
+  assertEquals,
+  assertNotEquals,
+  assertExists,
+  assert,
+} from "jsr:@std/assert";
+import {
+  getRandomErrorJS,
+  getErrorByCodeJS,
+  getAllStopCodes,
+} from "../../src/ErrorMessages.bs.js";
 
-describe('Error Messages Utility', () => {
-  describe('getRandomError', () => {
-    test('should return a valid error object', () => {
-      const error = getRandomError();
+Deno.test("ErrorMessages: getRandomErrorJS returns valid shape", () => {
+  const error = getRandomErrorJS();
+  assertExists(error.stopCode);
+  assertExists(error.description);
+  assertExists(error.technicalDetail);
+  assertExists(error.qrMessage);
+  assert(error.percentage >= 0 && error.percentage <= 100);
+});
 
-      expect(error).toHaveProperty('stopCode');
-      expect(error).toHaveProperty('description');
-      expect(error).toHaveProperty('technicalDetail');
-      expect(error).toHaveProperty('qrMessage');
-      expect(error).toHaveProperty('percentage');
-    });
+Deno.test("ErrorMessages: getRandomErrorJS percentage is 0-100", () => {
+  for (let i = 0; i < 20; i++) {
+    const error = getRandomErrorJS();
+    assert(error.percentage >= 0, `percentage ${error.percentage} < 0`);
+    assert(error.percentage <= 100, `percentage ${error.percentage} > 100`);
+  }
+});
 
-    test('should return percentage between 0 and 100', () => {
-      const error = getRandomError();
+Deno.test("ErrorMessages: getRandomErrorJS returns code from list", () => {
+  const codes = getAllStopCodes();
+  const error = getRandomErrorJS();
+  assert(codes.includes(error.stopCode), `${error.stopCode} not in stop codes list`);
+});
 
-      expect(error.percentage).toBeGreaterThanOrEqual(0);
-      expect(error.percentage).toBeLessThanOrEqual(100);
-    });
+Deno.test("ErrorMessages: getRandomErrorJS returns variety over 10 calls", () => {
+  const errors = Array.from({ length: 10 }, () => getRandomErrorJS());
+  const uniqueCodes = new Set(errors.map((e) => e.stopCode));
+  assert(uniqueCodes.size > 1, "Expected variety of stop codes");
+});
 
-    test('should return a valid stop code from the list', () => {
-      const error = getRandomError();
+Deno.test("ErrorMessages: getErrorByCodeJS returns correct code", () => {
+  const error = getErrorByCodeJS("COFFEE_NOT_FOUND");
+  assertExists(error);
+  assertEquals(error.stopCode, "COFFEE_NOT_FOUND");
+});
 
-      expect(errorMessages.stopCodes).toContain(error.stopCode);
-    });
+Deno.test("ErrorMessages: getErrorByCodeJS handles lowercase with dashes", () => {
+  const error = getErrorByCodeJS("coffee-not-found");
+  assertExists(error);
+  assertEquals(error.stopCode, "COFFEE_NOT_FOUND");
+});
 
-    test('should return different errors on multiple calls', () => {
-      const errors = Array.from({ length: 10 }, () => getRandomError());
-      const uniqueCodes = new Set(errors.map(e => e.stopCode));
+Deno.test("ErrorMessages: getErrorByCodeJS returns null for invalid code", () => {
+  const error = getErrorByCodeJS("INVALID_CODE_XYZ_NOPE");
+  assertEquals(error, null);
+});
 
-      // With 10 calls, we should get at least a few different codes
-      // (unless we're very unlucky)
-      expect(uniqueCodes.size).toBeGreaterThan(1);
-    });
-  });
+Deno.test("ErrorMessages: getAllStopCodes contains humorous codes", () => {
+  const codes = getAllStopCodes();
+  assert(codes.includes("COFFEE_NOT_FOUND"));
+  assert(codes.includes("STACKOVERFLOW_COPY_PASTE_ERROR"));
+  assert(codes.includes("PRODUCTION_DEPLOYMENT_ON_FRIDAY"));
+});
 
-  describe('getErrorByCode', () => {
-    test('should return correct error for valid code', () => {
-      const code = 'COFFEE_NOT_FOUND';
-      const error = getErrorByCode(code);
+Deno.test("ErrorMessages: getAllStopCodes returns non-empty array", () => {
+  const codes = getAllStopCodes();
+  assert(Array.isArray(codes));
+  assert(codes.length > 0);
+});
 
-      expect(error).not.toBeNull();
-      expect(error.stopCode).toBe(code);
-    });
-
-    test('should handle lowercase and dashes', () => {
-      const error = getErrorByCode('coffee-not-found');
-
-      expect(error).not.toBeNull();
-      expect(error.stopCode).toBe('COFFEE_NOT_FOUND');
-    });
-
-    test('should return null for invalid code', () => {
-      const error = getErrorByCode('INVALID_CODE_XYZ');
-
-      expect(error).toBeNull();
-    });
-
-    test('should return description for known codes', () => {
-      const error = getErrorByCode('COFFEE_NOT_FOUND');
-
-      expect(error.description).toBeTruthy();
-      expect(typeof error.description).toBe('string');
-    });
-  });
-
-  describe('errorMessages data structure', () => {
-    test('should have humorous error codes', () => {
-      expect(errorMessages.stopCodes).toContain('COFFEE_NOT_FOUND');
-      expect(errorMessages.stopCodes).toContain('STACKOVERFLOW_COPY_PASTE_ERROR');
-      expect(errorMessages.stopCodes).toContain('PRODUCTION_DEPLOYMENT_ON_FRIDAY');
-    });
-
-    test('should have descriptions for custom codes', () => {
-      expect(errorMessages.descriptions).toHaveProperty('COFFEE_NOT_FOUND');
-      expect(errorMessages.descriptions).toHaveProperty('NPM_INSTALL_TIMEOUT');
-    });
-
-    test('should have multiple technical details', () => {
-      expect(errorMessages.technicalDetails.length).toBeGreaterThan(0);
-      expect(Array.isArray(errorMessages.technicalDetails)).toBe(true);
-    });
-
-    test('should have QR messages', () => {
-      expect(errorMessages.qrMessages.length).toBeGreaterThan(0);
-      expect(Array.isArray(errorMessages.qrMessages)).toBe(true);
-    });
-  });
+Deno.test("ErrorMessages: getErrorByCodeJS description is string", () => {
+  const error = getErrorByCodeJS("COFFEE_NOT_FOUND");
+  assertExists(error);
+  assertEquals(typeof error.description, "string");
+  assertNotEquals(error.description, "");
 });

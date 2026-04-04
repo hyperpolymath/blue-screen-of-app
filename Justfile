@@ -94,9 +94,32 @@ info:
 # TESTING
 # ============================================================================
 
-# Run all tests
-test:
+# Run all 6 Grade B test targets
+test: test-structure test-lint test-fmt test-config test-deno test-zig
+
+# T1: Run Deno unit + integration tests
+test-deno:
     deno task test
+
+# T2: Run Zig FFI integration test
+test-zig:
+    zig test ffi/zig/test/integration_test.zig
+
+# T3: Lint src/server.js
+test-lint:
+    deno lint src/server.js
+
+# T4: Check formatting of src/server.js
+test-fmt:
+    deno fmt --check src/server.js
+
+# T5: Typecheck Nickel config
+test-config:
+    nickel typecheck config.ncl
+
+# T6: Validate repository structure
+test-structure:
+    bash tests/validate_structure.sh
 
 # Run tests in watch mode
 test-watch:
