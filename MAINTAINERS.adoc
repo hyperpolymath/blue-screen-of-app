@@ -1,0 +1,143 @@
+= Maintainers
+
+This document lists the maintainers of the Blue Screen of App project.
+
+== Current Maintainers
+
+=== Project Lead
+
+* **Role**: Project Lead, Primary Maintainer
+* **Responsibilities**:
+  - Overall project direction and roadmap
+  - Architecture decisions
+  - Release management
+  - Security response coordination
+  - Community management
+* **Contact**: [Update with actual contact]
+* **GitHub**: [Update with GitHub handle]
+* **Timezone**: [Update with timezone]
+* **Availability**: [Update with availability]
+
+== Emeritus Maintainers
+
+_(No emeritus maintainers yet)_
+
+== Maintainer Responsibilities
+
+=== All Maintainers
+
+1. **Code Review**: Review and merge pull requests
+2. **Issue Triage**: Label and prioritize issues
+3. **Documentation**: Keep documentation up-to-date
+4. **Community Support**: Answer questions and help contributors
+5. **Security**: Respond to security reports promptly
+6. **Releases**: Participate in release process
+7. **Governance**: Vote on major decisions
+
+=== Specific Areas of Responsibility
+
+| Area | Maintainer | Notes |
+|------|------------|-------|
+| Core Application | Project Lead | Express.js, routes, middleware |
+| BSOD Templates | Project Lead | EJS templates, CSS styling |
+| API Development | Project Lead | REST API endpoints |
+| Testing | Project Lead | Jest, Supertest, coverage |
+| Documentation | Project Lead | README, API docs, guides |
+| Security | Project Lead | SECURITY.md, vulnerability response |
+| DevOps | Project Lead | Docker, CI/CD, deployments |
+| Community | Project Lead | Issues, PRs, discussions |
+
+== How to Become a Maintainer
+
+We welcome contributors who demonstrate:
+
+1. **Sustained Contributions**: Regular, high-quality PRs over 3+ months
+2. **Technical Excellence**: Deep understanding of the codebase
+3. **Community Engagement**: Helpful code reviews, issue triage, documentation
+4. **Alignment**: Share project values and vision
+5. **Reliability**: Consistent availability and responsiveness
+
+=== Process
+
+1. **Nomination**: Any current maintainer can nominate a contributor
+2. **Discussion**: Maintainers discuss the nomination privately
+3. **Consensus**: All current maintainers must approve (unanimity required)
+4. **Invitation**: Nominee is invited to join the maintainer team
+5. **Onboarding**: New maintainer receives access and orientation
+
+== Stepping Down
+
+Maintainers may step down at any time by:
+
+1. Notifying other maintainers
+2. Transferring active responsibilities
+3. Moving to emeritus status (optional, with recognition)
+
+We deeply appreciate all maintainer contributions and respect life circumstances that may require stepping back.
+
+== Maintainer Meetings
+
+* **Frequency**: As needed (typically monthly or quarterly)
+* **Format**: Asynchronous (GitHub Discussions) or synchronous (video call)
+* **Agenda**:
+  - Project roadmap
+  - Major decisions
+  - Community health
+  - Security updates
+  - Release planning
+
+== Decision-Making Process
+
+=== Minor Decisions
+* Single maintainer can decide
+* Examples: Bug fixes, documentation updates, dependency updates
+
+=== Major Decisions
+* Consensus among all maintainers
+* Examples: Architecture changes, new features, breaking changes, governance updates
+
+=== Conflict Resolution
+1. Discussion in private maintainer channel
+2. Attempt to reach consensus
+3. If consensus fails, vote (simple majority)
+4. Project lead has tie-breaking vote (used sparingly)
+
+== Maintainer Privileges
+
+* Write access to main repository
+* Ability to merge pull requests
+* Access to release process
+* Access to security reports
+* Ability to modify GitHub settings (labels, milestones, etc.)
+* Invitation to private maintainer discussions
+
+== Code of Conduct Enforcement
+
+Maintainers are responsible for enforcing the Code of Conduct:
+
+1. **First Violation**: Private warning
+2. **Second Violation**: Public warning
+3. **Third Violation**: Temporary ban
+4. **Severe Violations**: Immediate permanent ban
+
+Maintainers must recuse themselves from enforcement decisions where they have a conflict of interest.
+
+== Contact
+
+* **Public Discussions**: GitHub Discussions
+* **Issues**: GitHub Issues
+* **Security**: See SECURITY.md
+* **Private Matters**: [Update with contact method]
+
+== Acknowledgments
+
+We are grateful to all contributors, past and present, who have helped build this project. Special thanks to:
+
+* All contributors who submitted pull requests
+* Community members who reported issues
+* Security researchers who responsibly disclosed vulnerabilities
+* Everyone who provided feedback and suggestions
+
+---
+
+Last updated: 2025-01-15

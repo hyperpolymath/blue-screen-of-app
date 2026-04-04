@@ -1,0 +1,642 @@
+= Deployment Guide - Blue Screen of App
+:toc:
+:toc-placement!:
+:icons: font
+
+toc::[]
+
+== Quick Start Deployment
+
+=== Prerequisites Check
+
+Before deploying, ensure you have:
+
+* Deno 1.39+ installed
+* Podman 4.0+ installed (or Docker as fallback)
+* Just command runner installed
+* Valid TLS certificates for HTTPS/QUIC
+
+=== Bootstrap Installation
+
+Run the bootstrap script to install all dependencies:
+
+[source,bash]
+----
+./scripts/bootstrap.sh
+----
+
+This will automatically install:
+
+* Podman (if not present)
+* Just command runner
+* Deno runtime
+* ReScript compiler (optional, for development)
+* Nickel (optional, for config editing)
+
+== Build Process
+
+=== Step 1: Build Application
+
+[source,bash]
+----
+# Build everything (ReScript + config export)
+just build
+
+# Or manually:
+bash scripts/build.sh
+----
+
+This script:
+
+1. Compiles ReScript (.res → .bs.js)
+2. Exports Nickel config to JSON
+3. Validates build outputs
+
+=== Step 2: Generate TLS Certificates
+
+For HTTPS and QUIC support on port 443:
+
+[source,bash]
+----
+# Generate self-signed certificates (development)
+just generate-certs
+
+# Or manually:
+mkdir -p certs
+openssl req -x509 -newkey rsa:4096 -keyout certs/key.pem \
+  -out certs/cert.pem -days 365 -nodes \
+  -subj "/CN=localhost"
+----
+
+For production, use Let's Encrypt or your certificate provider.
+
+== Deployment Methods
+
+=== Method 1: Podman Container (Recommended)
+
+==== Build Container
+
+[source,bash]
+----
+# Build Podman image
+just podman-build
+
+# Or manually:
+podman build -t blue-screen-of-app:latest -f Containerfile .
+----
+
+==== Run Container
+
+[source,bash]
+----
+# Run in foreground
+just podman-run
+
+# Run in background (detached)
+just podman-run-detached
+
+# Or manually:
+podman run -d \
+  --name blue-screen-of-app \
+  -p 443:443 \
+  -v ./certs:/app/certs:ro \
+  -v ./logs:/app/logs \
+  --cap-add=NET_BIND_SERVICE \
+  blue-screen-of-app:latest
+----
+
+==== Rootless Mode
+
+Podman supports rootless containers:
+
+[source,bash]
+----
+# Run as non-root user (no sudo required)
+podman run -d \
+  --name bsod \
+  -p 8443:443 \
+  blue-screen-of-app:latest
+
+# Access on https://localhost:8443
+----
+
+For privileged port 443 without root:
+
+[source,bash]
+----
+# Option 1: Use port mapping (443 → 8443)
+podman run -p 443:8443 --user 1000:1000 blue-screen-of-app
+
+# Option 2: Enable unprivileged port binding
+echo 'net.ipv4.ip_unprivileged_port_start=443' | sudo tee -a /etc/sysctl.conf
+sudo sysctl -p
+----
+
+=== Method 2: Direct Deno Execution
+
+==== Development Mode
+
+[source,bash]
+----
+# Run with auto-reload
+just dev
+
+# Or:
+deno task dev
+----
+
+==== Production Mode (Port 443)
+
+[source,bash]
+----
+# Option 1: Use sudo
+sudo deno task start
+
+# Option 2: Grant capabilities (Linux only)
+sudo setcap 'cap_net_bind_service=+ep' $(which deno)
+deno task start
+
+# Option 3: Use alternative port
+PORT=8443 deno task start
+----
+
+=== Method 3: Systemd Service
+
+Create a systemd service for automatic startup:
+
+[source,bash]
+----
+# Create service file
+sudo tee /etc/systemd/system/blue-screen-of-app.service <<EOF
+[Unit]
+Description=Blue Screen of App - Deno Server
+After=network.target
+
+[Service]
+Type=simple
+User=www-data
+Group=www-data
+WorkingDirectory=/opt/blue-screen-of-app
+ExecStart=/usr/local/bin/deno run --allow-net --allow-read --allow-env src/server.js
+Restart=always
+RestartSec=10
+Environment="NODE_ENV=production"
+AmbientCapabilities=CAP_NET_BIND_SERVICE
+
+[Install]
+WantedBy=multi-user.target
+EOF
+
+# Enable and start service
+sudo systemctl daemon-reload
+sudo systemctl enable blue-screen-of-app
+sudo systemctl start blue-screen-of-app
+
+# Check status
+sudo systemctl status blue-screen-of-app
+
+# View logs
+sudo journalctl -u blue-screen-of-app -f
+----
+
+=== Method 4: Nix Flakes (Reproducible)
+
+If you have Nix with flakes enabled:
+
+[source,bash]
+----
+# Build with Nix
+nix build
+
+# Run with Nix
+nix run
+
+# Enter development shell
+nix develop
+
+# Build Docker image with Nix
+nix build .#dockerImage
+----
+
+== QUIC/HTTP3 Configuration
+
+=== Requirements
+
+* Valid TLS certificates
+* Port 443 (or 8443)
+* Deno with --unstable flag (experimental)
+* UDP traffic allowed through firewall
+
+=== Enable QUIC
+
+QUIC is enabled by default in `config.ncl`:
+
+[source,nickel]
+----
+{
+  server = {
+    protocols = {
+      quic | default = true,
+      http3 | default = true,
+      http2 | default = true,
+      http1 | default = true,
+    },
+  },
+
+  quic = {
+    enabled | default = true,
+    maxIdleTimeout | default = 30000,
+    initialMaxData | default = 1048576,
+  },
+}
+----
+
+=== Firewall Configuration
+
+[source,bash]
+----
+# Allow HTTP/3 (QUIC) - UDP port 443
+sudo ufw allow 443/udp
+
+# Allow HTTPS - TCP port 443
+sudo ufw allow 443/tcp
+
+# For firewalld (RHEL/CentOS)
+sudo firewall-cmd --permanent --add-port=443/tcp
+sudo firewall-cmd --permanent --add-port=443/udp
+sudo firewall-cmd --reload
+----
+
+=== Test QUIC Connection
+
+[source,bash]
+----
+# Test with curl (HTTP/3)
+curl --http3 https://localhost:443/api/health
+
+# Test with justfile
+just quic-test
+----
+
+== Environment Configuration
+
+=== Nickel Configuration
+
+Edit `config.ncl` for all settings:
+
+[source,nickel]
+----
+{
+  server = {
+    port | default = 443,
+    host | default = "0.0.0.0",
+  },
+
+  tls = {
+    certFile | default = "./certs/cert.pem",
+    keyFile | default = "./certs/key.pem",
+  },
+
+  security = {
+    cors = {
+      origin | default = "*",
+    },
+  },
+
+  features = {
+    analytics | default = true,
+    qrCodes | default = true,
+  },
+}
+----
+
+After editing, rebuild:
+
+[source,bash]
+----
+just build
+----
+
+=== Runtime Environment Variables
+
+Override config with environment variables:
+
+[source,bash]
+----
+export PORT=8443
+export HOST="0.0.0.0"
+export NODE_ENV=production
+
+deno task start
+----
+
+== Production Deployment
+
+=== Security Checklist
+
+Before deploying to production:
+
+* [ ] Use valid TLS certificates (not self-signed)
+* [ ] Set strong CORS policy in config.ncl
+* [ ] Enable rate limiting
+* [ ] Configure firewall rules
+* [ ] Use non-root user
+* [ ] Enable security headers
+* [ ] Set up log rotation
+* [ ] Configure monitoring
+* [ ] Regular backups
+* [ ] Security updates schedule
+
+=== Performance Tuning
+
+[source,nickel]
+----
+{
+  server = {
+    workers | default = 4,              # CPU cores
+    maxConnections | default = 1000,    # Max concurrent
+    keepAliveTimeout | default = 5000,  # milliseconds
+  },
+
+  container = {
+    resources = {
+      cpus | default = 2.0,
+      memory | default = "512m",
+    },
+  },
+}
+----
+
+=== Monitoring Setup
+
+==== Health Checks
+
+[source,bash]
+----
+# HTTP health check
+curl https://localhost:443/api/health
+
+# Automated monitoring
+just health-check
+
+# Watch mode
+watch -n 5 just health-check
+----
+
+==== Prometheus Metrics
+
+[source,bash]
+----
+# Scrape metrics
+curl https://localhost:443/api/metrics
+
+# Configure Prometheus scraper
+# Add to prometheus.yml:
+scrape_configs:
+  - job_name: 'blue-screen-of-app'
+    scrape_interval: 15s
+    static_configs:
+      - targets: ['localhost:443']
+    metrics_path: '/api/metrics'
+    scheme: 'https'
+    tls_config:
+      insecure_skip_verify: true
+----
+
+==== Log Management
+
+[source,bash]
+----
+# View logs
+just podman-logs
+
+# Follow logs
+just podman-logs-follow
+
+# Log rotation with logrotate
+sudo tee /etc/logrotate.d/blue-screen-of-app <<EOF
+/opt/blue-screen-of-app/logs/*.log {
+    daily
+    rotate 7
+    compress
+    delaycompress
+    notifempty
+    missingok
+    copytruncate
+}
+EOF
+----
+
+== Troubleshooting
+
+=== Port 443 Access Denied
+
+*Problem*: Cannot bind to port 443
+
+*Solutions*:
+
+[source,bash]
+----
+# Solution 1: Use sudo
+sudo deno task start
+
+# Solution 2: Grant capabilities (Linux)
+sudo setcap 'cap_net_bind_service=+ep' $(which deno)
+
+# Solution 3: Use alternative port
+PORT=8443 deno task start
+
+# Solution 4: Use Podman with user mapping
+just podman-run
+----
+
+=== ReScript Compilation Failed
+
+*Problem*: ReScript not installed or compilation fails
+
+*Solutions*:
+
+[source,bash]
+----
+# Install ReScript globally
+npm install -g rescript
+
+# Or use the stub files (already included)
+# The .bs.js stub files allow testing without ReScript
+
+# Rebuild
+just build
+----
+
+=== Deno Module Not Found
+
+*Problem*: Cannot find imported modules
+
+*Solutions*:
+
+[source,bash]
+----
+# Cache dependencies
+deno cache src/server.js
+
+# Or use justfile
+just cache
+----
+
+=== QUIC/HTTP3 Not Working
+
+*Problem*: Cannot connect via HTTP/3
+
+*Checks*:
+
+1. TLS certificates are valid
+2. UDP port 443 is open in firewall
+3. Deno has --unstable flag (added automatically)
+4. Client supports HTTP/3
+
+[source,bash]
+----
+# Test HTTP/3 support
+just quic-test
+
+# Check firewall
+sudo ufw status
+sudo firewall-cmd --list-ports
+
+# Verify certificates
+openssl x509 -in certs/cert.pem -text -noout
+----
+
+=== Container Build Fails
+
+*Problem*: Podman build errors
+
+*Solutions*:
+
+[source,bash]
+----
+# Clean build
+just clean-all
+just podman-build
+
+# Check Podman status
+podman info
+podman version
+
+# Use --no-cache
+podman build --no-cache -t blue-screen-of-app -f Containerfile .
+----
+
+== Backup and Recovery
+
+=== Backup Configuration
+
+[source,bash]
+----
+# Backup configuration and data
+tar -czf backup-$(date +%Y%m%d).tar.gz \
+  config.ncl \
+  config.json \
+  certs/ \
+  logs/
+
+# Automated backup (add to cron)
+just backup
+----
+
+=== Restore from Backup
+
+[source,bash]
+----
+# Extract backup
+tar -xzf backup-20241122.tar.gz
+
+# Rebuild application
+just build
+
+# Restart service
+just podman-restart
+----
+
+== Scaling and Load Balancing
+
+=== Multiple Instances
+
+[source,bash]
+----
+# Run multiple containers
+for i in {1..4}; do
+  podman run -d \
+    --name bsod-$i \
+    -p $((8443 + i)):443 \
+    blue-screen-of-app:latest
+done
+----
+
+=== Nginx Reverse Proxy
+
+[source,nginx]
+----
+upstream bsod_backend {
+    server localhost:8444;
+    server localhost:8445;
+    server localhost:8446;
+    server localhost:8447;
+}
+
+server {
+    listen 443 ssl http2 quic;
+    listen [::]:443 ssl http2 quic;
+
+    server_name example.com;
+
+    ssl_certificate /path/to/cert.pem;
+    ssl_certificate_key /path/to/key.pem;
+
+    # HTTP/3
+    add_header Alt-Svc 'h3=":443"; ma=86400';
+
+    location / {
+        proxy_pass https://bsod_backend;
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection 'upgrade';
+        proxy_set_header Host $host;
+        proxy_cache_bypass $http_upgrade;
+    }
+}
+----
+
+== Updating
+
+=== Pull Latest Changes
+
+[source,bash]
+----
+# Pull from git
+git pull origin main
+
+# Rebuild
+just build
+
+# Restart
+just podman-restart
+----
+
+=== Zero-Downtime Deployment
+
+[source,bash]
+----
+# Blue-green deployment
+just deploy-blue-green
+----
+
+== Support
+
+* Issues: https://github.com/Hyperpolymath/blue-screen-of-app/issues
+* Security: link:SECURITY.md[Security Policy]
+* Docs: link:README.adoc[README]
+
+---
+
+For more details, see link:README.adoc[README] and link:API.adoc[API Documentation].

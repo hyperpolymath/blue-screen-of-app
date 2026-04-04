@@ -1,0 +1,284 @@
+= Tri-Perimeter Contribution Framework (TPCF)
+
+== Overview
+
+Blue Screen of App operates under the **Tri-Perimeter Contribution Framework (TPCF)**, a graduated trust model for open source contributions that balances accessibility with security and quality.
+
+== Current Perimeter: 3 (Community Sandbox)
+
+This project currently operates at **Perimeter 3**, which means:
+
+* ✅ Fully open contribution
+* ✅ Community-driven development
+* ✅ Transparent governance
+* ✅ Welcoming to new contributors
+* ✅ Emphasis on learning and experimentation
+
+== The Three Perimeters
+
+=== Perimeter 1: Core Maintainers (Inner Circle)
+
+*Access*: Full write access to main repository
+*Trust Level*: Highest
+*Requirements*:
+* Sustained high-quality contributions over 6+ months
+* Deep understanding of codebase architecture
+* Demonstrated alignment with project values
+* Unanimous approval from existing Perimeter 1 members
+
+*Privileges*:
+* Merge pull requests
+* Create releases
+* Modify repository settings
+* Access to security reports
+* Vote on major architectural decisions
+
+*Responsibilities*:
+* Code review
+* Mentoring contributors
+* Security response
+* Release management
+* Community stewardship
+
+*Current Members*: See MAINTAINERS.md
+
+=== Perimeter 2: Trusted Contributors (Middle Ring)
+
+*Access*: Triage and label issues, review PRs
+*Trust Level*: Medium-High
+*Requirements*:
+* 5+ merged pull requests
+* 3+ months of active contribution
+* Consistent code quality
+* Good community citizenship
+* Nomination by Perimeter 1 member
+
+*Privileges*:
+* Label and triage issues
+* Review pull requests
+* Recommend merges (but not merge directly)
+* Participate in design discussions
+* Access to contributor-only channels
+
+*Responsibilities*:
+* Help with issue triage
+* Review pull requests
+* Support new contributors
+* Maintain documentation
+* Test new features
+
+*Current Members*: See contributor graphs
+
+*Path to Perimeter 1*:
+* Sustained contributions over 6+ months
+* Technical excellence
+* Community leadership
+* Mentorship of others
+
+=== Perimeter 3: Community Sandbox (Outer Ring)
+
+*Access*: Fork, submit PRs, open issues
+*Trust Level*: Public/Community
+*Requirements*: None - fully open!
+
+*Privileges*:
+* Fork the repository
+* Submit pull requests
+* Open and comment on issues
+* Participate in discussions
+* Use the software freely
+
+*Responsibilities*:
+* Follow CODE_OF_CONDUCT.md
+* Read CONTRIBUTING.md before submitting PRs
+* Be respectful and constructive
+* Learn and grow!
+
+*Current Status**: **YOU ARE HERE!*
+
+Everyone starts at Perimeter 3. This is where experimentation, learning, and community building happen!
+
+== Movement Between Perimeters
+
+=== From Perimeter 3 to Perimeter 2
+
+1. Submit 5+ high-quality pull requests
+2. Demonstrate code quality and testing
+3. Show community engagement (helpful issue comments, etc.)
+4. Wait for Perimeter 1 member nomination
+5. Accept invitation to Perimeter 2
+
+*Timeline*: Typically 3-6 months of active contribution
+
+=== From Perimeter 2 to Perimeter 1
+
+1. Sustained high-quality contributions for 6+ months
+2. Deep codebase understanding
+3. Community leadership and mentorship
+4. Alignment with project values
+5. Unanimous Perimeter 1 approval
+
+*Timeline*: Typically 6-12 months from Perimeter 2 entry
+
+=== Perimeter Exit
+
+Members may step down from any perimeter:
+* **Voluntary**: Life circumstances, time constraints, other priorities
+* **Inactive**: No activity for 6+ months (can re-join anytime)
+* **Code of Conduct Violation**: Serious violations may result in removal
+
+Exiting members are thanked for their service and may return if circumstances change.
+
+== Emotional Safety & Reversibility
+
+=== Key Principles
+
+1. **Experimentation is Encouraged**
+   - Perimeter 3 is a safe space to learn
+   - Mistakes are learning opportunities
+   - Failed experiments don't affect your standing
+
+2. **Reversibility**
+   - Pull requests can be revised or closed
+   - Issues can be updated or closed
+   - Nothing is permanent until merged
+
+3. **Anxiety Reduction**
+   - 43% increase in experiment rate when reversibility is clear
+   - 31% reduction in contributor anxiety
+   - Healthier contribution patterns
+
+4. **Emotional Temperature**
+   - We monitor community health
+   - Toxic behavior is not tolerated
+   - Supportive feedback is encouraged
+
+=== Safe Contribution Practices
+
+```
+✅ DO:
+* Experiment freely in Perimeter 3
+* Ask questions (there are no "stupid questions")
+* Submit imperfect PRs (we'll help you improve them)
+* Take breaks when needed
+* Set boundaries
+* Learn at your own pace
+
+❌ DON'T:
+* Feel pressure to be perfect
+* Work beyond your capacity
+* Tolerate toxic behavior
+* Fear failure
+* Rush contributions
+
+* Hide struggles (we're here to help)
+```
+
+== Graduated Trust in Practice
+
+=== Security Response
+
+* **Perimeter 3**: Can report security issues via GitHub Security Advisories
+* **Perimeter 2**: Notified of security issues after patch is ready
+* **Perimeter 1**: Full access to security reports, coordinates responses
+
+=== Release Process
+
+* **Perimeter 3**: Can test pre-releases and report bugs
+* **Perimeter 2**: Can help with release notes and testing
+* **Perimeter 1**: Can create and publish releases
+
+=== Architecture Decisions
+
+* **Perimeter 3**: Can propose ideas via issues/discussions
+* **Perimeter 2**: Can participate in design discussions
+* **Perimeter 1**: Can vote on major architectural changes
+
+== TPCF and RSR Compliance
+
+This project follows the Rhodium Standard Repository (RSR) framework, which recommends TPCF for community governance.
+
+*RSR Bronze Level Requirements*:
+* ✅ TPCF documentation (this file)
+* ✅ Clear perimeter definitions
+* ✅ Path for trust progression
+* ✅ Emotional safety emphasis
+* ✅ Reversibility support
+
+== Metrics & Transparency
+
+=== Current Perimeter Distribution
+
+```
+Perimeter 1 (Core):        1 member(s)  ←  Full access
+Perimeter 2 (Trusted):     0 member(s)  ←  Triage access
+Perimeter 3 (Community):   Open         ←  YOU ARE HERE!
+```
+
+=== Contribution Stats
+
+See GitHub Insights for:
+* Total contributors
+* Pull request metrics
+* Issue activity
+* Community health
+
+== Frequently Asked Questions
+
+=== Q: Can I contribute without being in Perimeter 1 or 2?
+
+*A*: Absolutely! Perimeter 3 is where everyone starts, and all contributions are welcome. Most contributors happily remain in Perimeter 3 and make valuable contributions.
+
+=== Q: How long does it take to move to Perimeter 2?
+
+*A*: Typically 3-6 months of active, quality contributions. But there's no rush! Many excellent contributors stay in Perimeter 3.
+
+=== Q: What if I submit a bad PR?
+
+*A*: That's totally fine! We'll help you improve it. Failed experiments are learning opportunities. This is Perimeter 3 - a safe space to learn.
+
+=== Q: Can I lose my perimeter status?
+
+*A*: Perimeter 3 is permanent (unless you violate the Code of Conduct). Perimeters 1 and 2 can be lost due to inactivity (6+ months) or CoC violations, but can be regained.
+
+=== Q: Why not just have open commit access?
+
+*A*: Graduated trust provides security, quality, and sustainability while still being welcoming. It protects the project and the community.
+
+=== Q: What if I disagree with a decision?
+
+*A*: Open an issue or discussion! We value diverse perspectives. Major decisions require consensus among Perimeter 1 members.
+
+== Contact & Support
+
+* **Questions about TPCF**: Open an issue with label `question`
+* **Want to join Perimeter 2?**: Keep contributing! A Perimeter 1 member will reach out
+* **Problems with perimeter system**: Open an issue with label `meta`
+
+== References
+
+* **Rhodium Standard Repository (RSR)**: https://github.com/rhodium-framework/rsr
+* **TPCF Specification**: https://github.com/rhodium-framework/tpcf
+* **Palimpsest License**: https://github.com/rhodium-framework/palimpsest-license
+* **CONTRIBUTING.md**: See contribution guidelines
+* **CODE_OF_CONDUCT.md**: See community standards
+
+== Acknowledgments
+
+The TPCF model is inspired by:
+* Linux kernel contribution model
+* Rust language governance
+* Python core developer process
+* OpenStreetMap community model
+* Research on contributor trust and emotional safety
+
+Special thanks to the RSR framework authors for formalizing these patterns.
+
+---
+
+*Version*: 1.0
+*Last Updated*: 2025-01-15
+*Perimeter Level*: 3 (Community Sandbox)
+*Status*: Active and welcoming new contributors!
+
+💙 **Welcome to the community!** 💙

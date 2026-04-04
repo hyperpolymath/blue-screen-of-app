@@ -1,0 +1,288 @@
+= Contributing to Blue Screen of App
+
+First off, thank you for considering contributing to Blue Screen of App! It's people like you that make this project such a fun and useful tool for the developer community.
+
+== Code of Conduct
+
+This project and everyone participating in it is governed by our Code of Conduct. By participating, you are expected to uphold this code. Please report unacceptable behavior to the project maintainers.
+
+== How Can I Contribute?
+
+=== Reporting Bugs
+
+Before creating bug reports, please check the existing issues to avoid duplicates. When you create a bug report, include as many details as possible:
+
+* **Use a clear and descriptive title**
+* **Describe the exact steps to reproduce the problem**
+* **Provide specific examples** to demonstrate the steps
+* **Describe the behavior you observed** and what you expected
+* **Include screenshots** if applicable
+* **Include your environment details** (OS, Node version, browser, etc.)
+
+=== Suggesting Enhancements
+
+Enhancement suggestions are tracked as GitHub issues. When creating an enhancement suggestion, include:
+
+* **Use a clear and descriptive title**
+* **Provide a detailed description** of the suggested enhancement
+* **Explain why this enhancement would be useful**
+* **List any similar features** in other projects if applicable
+
+=== Adding New Error Messages
+
+We love creative and humorous error messages! To add new ones:
+
+1. Edit `src/utils/errorMessages.js`
+2. Add your error code to the `stopCodes` array
+3. Add a description to the `descriptions` object
+4. Make sure it's funny but not offensive
+5. Test it works with `?code=YOUR_NEW_CODE`
+
+Example:
+```javascript
+stopCodes: [
+  // ... existing codes
+  'YOUR_NEW_ERROR_CODE',
+],
+
+descriptions: {
+  // ... existing descriptions
+  'YOUR_NEW_ERROR_CODE': 'A witty description of your error.',
+},
+```
+
+=== Adding New BSOD Styles
+
+Want to add a macOS kernel panic or Linux panic screen?
+
+1. Create a new EJS template in `src/views/` (e.g., `bsod-macos.ejs`)
+2. Style it to match the target OS error screen
+3. Add the style to the styles array in `src/routes/api.js`
+4. Update documentation in README.md and API.md
+5. Add tests in `tests/integration/bsod.test.js`
+
+=== Pull Requests
+
+1. Fork the repo and create your branch from `main`
+2. If you've added code that should be tested, add tests
+3. If you've changed APIs, update the documentation
+4. Ensure the test suite passes
+5. Make sure your code lints
+6. Issue that pull request!
+
+==== Pull Request Guidelines
+
+* **Keep PRs focused** - One feature/fix per PR
+* **Write clear commit messages** - Use conventional commits format
+* **Update documentation** - Keep README.md and API.md in sync
+* **Add tests** - Maintain or improve code coverage
+* **Follow the code style** - Run `npm run lint:fix`
+
+==== Commit Message Format
+
+We use conventional commits:
+
+```
+type(scope): subject
+
+body
+
+footer
+```
+
+Types:
+* `feat`: New feature
+* `fix`: Bug fix
+* `docs`: Documentation changes
+* `style`: Code style changes (formatting, etc.)
+* `refactor`: Code refactoring
+* `test`: Adding or updating tests
+* `chore`: Maintenance tasks
+
+Examples:
+```
+feat(errors): add DOCKER_WHALE_PANIC error code
+
+fix(api): handle invalid percentage values correctly
+
+docs(readme): update installation instructions
+```
+
+== Development Setup
+
+=== Prerequisites
+
+* Node.js 18.x or later
+* npm 9.x or later
+* Git
+
+=== Setup Steps
+
+```bash
+= Clone your fork
+git clone https://github.com/YOUR_USERNAME/blue-screen-of-app.git
+cd blue-screen-of-app
+
+= Add upstream remote
+git remote add upstream https://github.com/ORIGINAL_OWNER/blue-screen-of-app.git
+
+= Install dependencies
+npm install
+
+= Copy environment file
+cp .env.example .env
+
+= Start development server
+npm run dev
+```
+
+=== Running Tests
+
+```bash
+= Run all tests
+npm test
+
+= Run tests in watch mode
+npm run test:watch
+
+= Run with coverage
+npm test -- --coverage
+```
+
+=== Linting
+
+```bash
+= Check for issues
+npm run lint
+
+= Auto-fix issues
+npm run lint:fix
+```
+
+== Project Structure
+
+```
+blue-screen-of-app/
+├── src/
+│   ├── config/           # Configuration
+│   ├── middleware/       # Express middleware
+│   ├── routes/           # API routes
+│   │   ├── api.js        # API endpoints
+│   │   └── bsod.js       # Web interface routes
+│   ├── utils/            # Utilities
+│   │   ├── errorMessages.js  # Error codes and messages
+│   │   ├── analytics.js      # Analytics tracking
+│   │   └── logger.js         # Logging utility
+│   ├── views/            # EJS templates
+│   │   ├── bsod-win10.ejs
+│   │   ├── bsod-win11.ejs
+│   │   ├── bsod-win7.ejs
+│   │   └── bsod-winxp.ejs
+│   └── server.js         # Main application
+├── tests/
+│   ├── unit/             # Unit tests
+│   └── integration/      # Integration tests
+└── ...
+```
+
+== Code Style
+
+We use ESLint for code style enforcement:
+
+* Use 2 spaces for indentation
+* Use single quotes for strings
+* Add trailing commas in multi-line objects/arrays
+* Use semicolons
+* Maximum line length: 100 characters
+* Use `const` over `let` when possible
+* Use arrow functions for callbacks
+
+Example:
+```javascript
+const myFunction = (param1, param2) => {
+  const result = {
+    foo: 'bar',
+    baz: 'qux',
+  };
+
+  return result;
+};
+```
+
+== Testing Guidelines
+
+* Write tests for all new features
+* Maintain or improve code coverage
+* Use descriptive test names
+* Group related tests with `describe` blocks
+* Use `beforeEach` for test setup when needed
+
+Example:
+```javascript
+describe('Error Messages Utility', () => {
+  describe('getRandomError', () => {
+    test('should return a valid error object', () => {
+      const error = getRandomError();
+      expect(error).toHaveProperty('stopCode');
+    });
+  });
+});
+```
+
+== Documentation
+
+* Update README.md for user-facing changes
+* Update API.md for API changes
+* Add JSDoc comments for functions
+* Update CLAUDE.md for architecture changes
+
+== Adding Dependencies
+
+Think carefully before adding new dependencies:
+
+* Is it really needed?
+* Is it well-maintained?
+* What's the bundle size impact?
+* Are there lighter alternatives?
+
+Document why you're adding it in your PR description.
+
+== Performance Considerations
+
+* Keep bundle size small
+* Optimize images and assets
+* Use compression where appropriate
+* Consider caching strategies
+* Profile before optimizing
+
+== Security
+
+* Never commit secrets or credentials
+* Sanitize all user inputs
+* Keep dependencies updated
+* Follow OWASP best practices
+* Report security issues privately
+
+== Questions?
+
+Feel free to:
+* Open an issue for discussion
+* Reach out to maintainers
+* Check existing issues and PRs
+
+== Recognition
+
+Contributors will be recognized in:
+* GitHub contributors page
+* Release notes for significant contributions
+* Special mentions for creative error messages!
+
+== License
+
+By contributing, you agree that your contributions will be licensed under the MIT License.
+
+---
+
+Thank you for contributing to Blue Screen of App!
+
+Remember: The best contributions come with a side of humor! 😄

@@ -1,0 +1,504 @@
+= Blue Screen of App - API Documentation
+
+== Overview
+
+The Blue Screen of App provides both a web interface and a comprehensive REST API for generating and customizing blue screen error pages programmatically.
+
+Base URL: `http://localhost:3000` (or your deployed URL)
+
+== Table of Contents
+
+* [Web Interface](#web-interface)
+* [API Endpoints](#api-endpoints)
+  - [Error Generation](#error-generation)
+  - [Metadata](#metadata)
+  - [Analytics](#analytics)
+  - [Health & Monitoring](#health--monitoring)
+* [Error Codes](#error-codes)
+* [Styles](#styles)
+
+---
+
+== Web Interface
+
+=== Display BSOD
+
+*Endpoint:* `GET /`
+
+Display a blue screen of death with customizable parameters.
+
+*Query Parameters:*
+
+| Parameter | Type | Description | Default | Example |
+|-----------|------|-------------|---------|---------|
+| `style` | string | Visual style (win10, win11, win7, winxp) | `win10` | `?style=winxp` |
+| `code` | string | Specific error code to display | Random | `?code=COFFEE_NOT_FOUND` |
+| `message` | string | Custom error message | Auto-generated | `?message=Custom%20error` |
+| `technical` | string | Custom technical detail | Auto-generated | `?technical=Driver%20failed` |
+| `qr` | string | URL for QR code | Config default | `?qr=https://example.com` |
+| `percentage` | integer | Completion percentage (0-100) | Random | `?percentage=42` |
+| `lang` | string | Language code | `en` | `?lang=es` |
+
+*Examples:*
+
+```bash
+= Default BSOD
+curl http://localhost:3000/
+
+= Windows XP style
+curl http://localhost:3000/?style=winxp
+
+= Custom error code
+curl http://localhost:3000/?code=NPM_INSTALL_TIMEOUT
+
+= Fully customized
+curl "http://localhost:3000/?style=win11&message=System%20overheated&percentage=99"
+```
+
+=== Random Style
+
+*Endpoint:* `GET /random`
+
+Redirects to a random BSOD style.
+
+*Example:*
+
+```bash
+curl -L http://localhost:3000/random
+```
+
+---
+
+== API Endpoints
+
+=== Error Generation
+
+==== Get Random Error
+
+*Endpoint:* `GET /api/error`
+
+Returns a random error configuration.
+
+*Response:*
+
+```json
+{
+  "success": true,
+  "data": {
+    "stopCode": "COFFEE_NOT_FOUND",
+    "description": "Critical system resource COFFEE.SYS not found. Please insert coffee and press any key to continue.",
+    "technicalDetail": "Failed driver: CAFFEINE.DLL",
+    "qrMessage": "Scan for emotional support",
+    "percentage": 42
+  }
+}
+```
+
+*Example:*
+
+```bash
+curl http://localhost:3000/api/error
+```
+
+==== Get Specific Error
+
+*Endpoint:* `GET /api/error/:code`
+
+Returns a specific error by code.
+
+*Parameters:*
+
+* `code` (path parameter): Error code (case-insensitive, accepts dashes or underscores)
+
+*Response (Success):*
+
+```json
+{
+  "success": true,
+  "data": {
+    "stopCode": "PRODUCTION_DEPLOYMENT_ON_FRIDAY",
+    "description": "CRITICAL ERROR: Someone tried to deploy to production on Friday at 4:45 PM.",
+    "technicalDetail": "Memory dump: 0xC0FFEE",
+    "qrMessage": "Scan to file a complaint",
+    "percentage": 73
+  }
+}
+```
+
+*Response (Error):*
+
+```json
+{
+  "success": false,
+  "error": "Error code not found",
+  "availableCodes": ["COFFEE_NOT_FOUND", "NPM_INSTALL_TIMEOUT", ...]
+}
+```
+
+*Examples:*
+
+```bash
+= Uppercase with underscores
+curl http://localhost:3000/api/error/COFFEE_NOT_FOUND
+
+= Lowercase with dashes
+curl http://localhost:3000/api/error/coffee-not-found
+
+= Invalid code
+curl http://localhost:3000/api/error/INVALID_CODE
+```
+
+=== Metadata
+
+==== List Error Codes
+
+*Endpoint:* `GET /api/codes`
+
+Returns all available error codes.
+
+*Response:*
+
+```json
+{
+  "success": true,
+  "data": {
+    "codes": [
+      "CRITICAL_PROCESS_DIED",
+      "COFFEE_NOT_FOUND",
+      "NPM_INSTALL_TIMEOUT",
+      "PRODUCTION_DEPLOYMENT_ON_FRIDAY",
+      ...
+    ],
+    "count": 27
+  }
+}
+```
+
+*Example:*
+
+```bash
+curl http://localhost:3000/api/codes
+```
+
+==== List Styles
+
+*Endpoint:* `GET /api/styles`
+
+Returns all available visual styles.
+
+*Response:*
+
+```json
+{
+  "success": true,
+  "data": {
+    "styles": ["win10", "win11", "win7", "winxp"],
+    "default": "win10"
+  }
+}
+```
+
+*Example:*
+
+```bash
+curl http://localhost:3000/api/styles
+```
+
+=== Analytics
+
+==== Get Analytics
+
+*Endpoint:* `GET /api/analytics`
+
+Returns usage analytics and statistics.
+
+*Response:*
+
+```json
+{
+  "success": true,
+  "data": {
+    "totalVisits": 1337,
+    "styleViews": {
+      "win10": 500,
+      "winxp": 420,
+      "win7": 300,
+      "win11": 117
+    },
+    "errorCodeViews": {
+      "COFFEE_NOT_FOUND": 250,
+      "NPM_INSTALL_TIMEOUT": 180
+    },
+    "customMessageCount": 42,
+    "apiCalls": 567,
+    "startTime": "2025-01-15T10:30:00.000Z",
+    "uptime": {
+      "ms": 3600000,
+      "seconds": 3600,
+      "minutes": 60,
+      "hours": 1,
+      "human": "1h 0m 0s"
+    }
+  }
+}
+```
+
+*Example:*
+
+```bash
+curl http://localhost:3000/api/analytics
+```
+
+==== Reset Analytics
+
+*Endpoint:* `POST /api/analytics/reset`
+
+Resets all analytics counters (development only).
+
+*Response:*
+
+```json
+{
+  "success": true,
+  "message": "Analytics reset successfully"
+}
+```
+
+*Example:*
+
+```bash
+curl -X POST http://localhost:3000/api/analytics/reset
+```
+
+*Note:* Returns 403 Forbidden in production environment.
+
+=== Health & Monitoring
+
+==== Health Check
+
+*Endpoint:* `GET /api/health`
+
+Returns application health status.
+
+*Response:*
+
+```json
+{
+  "success": true,
+  "status": "healthy",
+  "timestamp": "2025-01-15T12:30:45.123Z",
+  "uptime": {
+    "ms": 3600000,
+    "seconds": 3600,
+    "minutes": 60,
+    "hours": 1,
+    "human": "1h 0m 0s"
+  },
+  "version": "1.0.0"
+}
+```
+
+*Example:*
+
+```bash
+curl http://localhost:3000/api/health
+```
+
+==== Prometheus Metrics
+
+*Endpoint:* `GET /api/metrics`
+
+Returns metrics in Prometheus format.
+
+*Response:*
+
+```
+= HELP bsod_total_visits Total number of BSOD page visits
+= TYPE bsod_total_visits counter
+bsod_total_visits 1337
+
+= HELP bsod_api_calls Total number of API calls
+= TYPE bsod_api_calls counter
+bsod_api_calls 567
+
+= HELP bsod_custom_messages Total number of custom messages
+= TYPE bsod_custom_messages counter
+bsod_custom_messages 42
+
+= HELP bsod_uptime_seconds Application uptime in seconds
+= TYPE bsod_uptime_seconds gauge
+bsod_uptime_seconds 3600
+```
+
+*Example:*
+
+```bash
+curl http://localhost:3000/api/metrics
+```
+
+---
+
+== Error Codes
+
+=== System Errors (Windows-like)
+
+* `CRITICAL_PROCESS_DIED`
+* `SYSTEM_SERVICE_EXCEPTION`
+* `PAGE_FAULT_IN_NONPAGED_AREA`
+* `IRQL_NOT_LESS_OR_EQUAL`
+* `DPC_WATCHDOG_VIOLATION`
+* `KERNEL_SECURITY_CHECK_FAILURE`
+* `UNEXPECTED_STORE_EXCEPTION`
+* `SYSTEM_THREAD_EXCEPTION_NOT_HANDLED`
+
+=== Humorous/Developer Errors
+
+* `EXCESSIVE_MEME_EXPOSURE` - Too many dank memes
+* `COFFEE_NOT_FOUND` - Missing COFFEE.SYS
+* `KEYBOARD_NOT_COFFEE_PROOF` - Liquid in keyboard
+* `USER_PRESSED_ANY_KEY` - User actually pressed ANY key
+* `MONDAY_MORNING_EXCEPTION` - Insufficient Monday caffeine
+* `INSUFFICIENT_RAM_DOWNLOADED` - Need to download more RAM
+* `MOTIVATION_NOT_FOUND` - MOTIVATION.DLL missing
+* `STACKOVERFLOW_COPY_PASTE_ERROR` - Malicious StackOverflow code
+* `GIT_COMMIT_WITHOUT_MESSAGE` - Commit with "fix stuff"
+* `PRODUCTION_DEPLOYMENT_ON_FRIDAY` - Friday 4:45 PM deployment
+* `NPM_INSTALL_TIMEOUT` - npm install running for 3 hours
+* `DEPENDENCY_HELL_DETECTED` - Sentient node_modules
+* `MERGE_CONFLICT_ANXIETY` - Unresolved merge conflicts
+* `SEMICOLON_MISSING` - JavaScript without semicolons
+* `UNDEFINED_IS_NOT_A_FUNCTION` - Classic TypeError
+* `CANNOT_READ_PROPERTY_OF_NULL` - Reading null properties
+* `CIRCULAR_DEPENDENCY_LOOP` - Circular dependencies
+* `REGEX_PARSER_GAVE_UP` - Regex too complex
+
+---
+
+== Styles
+
+=== Available Styles
+
+1. **win10** (Default)
+   - Windows 10 style
+   - Blue background (#0178D4)
+   - Modern sad face :(
+   - Clean typography
+
+2. **win11**
+   - Windows 11 style
+   - Slightly different blue (#0067C0)
+   - Refined typography
+   - Subtle background pattern
+
+3. **win7**
+   - Windows 7/8 style
+   - Classic blue (#00579e)
+   - Monospace font
+   - Progress bar with cursor
+   - Technical details
+
+4. **winxp**
+   - Windows XP style
+   - Deep blue (#0000AA)
+   - Retro DOS-like font
+   - Gray text on blue
+   - Scanline effect
+   - CRT flicker animation
+
+---
+
+== Rate Limiting
+
+API endpoints under `/api/` are rate-limited:
+
+* Default: 100 requests per 15 minutes per IP
+* Configurable via environment variables
+* Returns 429 Too Many Requests when exceeded
+
+---
+
+== Error Responses
+
+All API endpoints follow a consistent error format:
+
+```json
+{
+  "error": {
+    "message": "Error description",
+    "stack": "Stack trace (development only)"
+  }
+}
+```
+
+*Status Codes:*
+
+* `200` - Success
+* `404` - Not Found
+* `429` - Too Many Requests (rate limit exceeded)
+* `500` - Internal Server Error
+
+---
+
+== Examples
+
+=== Complete Integration Example
+
+```javascript
+// Fetch a random error
+const response = await fetch('http://localhost:3000/api/error');
+const { data } = await response.json();
+
+// Use it to display a BSOD
+const url = `http://localhost:3000/?code=${data.stopCode}&percentage=${data.percentage}`;
+window.location.href = url;
+```
+
+=== Custom BSOD Generator
+
+```javascript
+async function generateCustomBSOD() {
+  const styles = ['win10', 'win11', 'win7', 'winxp'];
+  const codesResponse = await fetch('http://localhost:3000/api/codes');
+  const { data: { codes } } = await codesResponse.json();
+
+  const randomStyle = styles[Math.floor(Math.random() * styles.length)];
+  const randomCode = codes[Math.floor(Math.random() * codes.length)];
+
+  return `http://localhost:3000/?style=${randomStyle}&code=${randomCode}`;
+}
+```
+
+=== Analytics Dashboard
+
+```javascript
+async function displayAnalytics() {
+  const response = await fetch('http://localhost:3000/api/analytics');
+  const { data } = await response.json();
+
+  console.log(`Total visits: ${data.totalVisits}`);
+  console.log(`Uptime: ${data.uptime.human}`);
+  console.log(`Most popular style: ${
+    Object.entries(data.styleViews)
+      .sort(([,a], [,b]) => b - a)[0][0]
+  }`);
+}
+```
+
+---
+
+== Easter Eggs
+
+The application includes several hidden features:
+
+1. **Konami Code** (Win10/11): Up Up Down Down Left Right Left Right B A
+2. **Keyboard Shortcuts:**
+   - Press 'W' on Win11 → Switch to WinXP
+   - Press '7' on Win11 → Switch to Win7
+   - Press ESC on WinXP → Switch to Win11
+   - Press F8 on WinXP → Switch to Win7
+
+---
+
+== Support
+
+For issues, feature requests, or contributions, please visit the GitHub repository.

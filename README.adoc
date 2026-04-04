@@ -1,0 +1,79 @@
+= Blue Screen of App
+
+image:https://img.shields.io/badge/License-PMPL--1.0-blue.svg[License: PMPL-1.0,link="https://github.com/hyperpolymath/palimpsest-license"]
+:toc:
+:icons: font
+
+[.lead]
+_Does exactly what it says on the tin... or screen._
+
+A humorous web app displaying authentic Blue Screen of Death errors. Built with *Deno*, *ReScript*, and *Podman*.
+
+image:https://img.shields.io/badge/License-PMPL--1.0-blue.svg[License: PMPL-1.0,link="https://github.com/hyperpolymath/palimpsest-license"]
+image:https://img.shields.io/badge/deno-2.0-brightgreen[Deno]
+image:https://img.shields.io/badge/RSR-Bronze-orange[RSR]
+
+== Quick Start
+
+[source,bash]
+----
+./scripts/bootstrap.sh  # Install Deno, Podman, Just
+just build              # Compile ReScript + export config
+just podman-run         # Deploy container
+# Visit https://localhost:443
+----
+
+== Features
+
+* 🎨 Four authentic BSOD styles (Win10, Win11, Win7, WinXP)
+* 🎭 25+ humorous error messages
+* 📡 REST API with analytics
+* 🔒 QUIC/HTTP3 with HTTP/2 fallback
+* ⚙️ Nickel configuration language
+* 🐳 Rootless Podman containers
+* 🔧 100+ Just recipes
+
+== Architecture
+
+* *Runtime*: Deno (no Node.js, no npm)
+* *Business Logic*: ReScript (type-safe)
+* *Server*: Minimal JavaScript glue code
+* *Containers*: Podman (rootless)
+* *Protocols*: QUIC/HTTP3/HTTP2/HTTP1.1
+* *Config*: Nickel → JSON export
+* *Port*: 443 (HTTPS)
+
+== Development
+
+[source,bash]
+----
+just dev           # Development mode
+just test          # Run tests
+just build         # Compile everything
+just validate      # RSR compliance check
+----
+
+See link:DEPLOYMENT.adoc[Deployment Guide] for details.
+
+== API
+
+[source,bash]
+----
+curl https://localhost:443/api/error
+curl https://localhost:443/api/codes
+curl https://localhost:443/api/health
+----
+
+See link:API.adoc[API Documentation].
+
+== Contributing
+
+See link:CONTRIBUTING.adoc[Contributing] and link:TPCF.adoc[TPCF].
+
+== License
+
+Dual-licensed: GPL-3.0-or-later OR Palimpsest-0.8. See link:LICENSE[LICENSE].
+
+---
+
+💙 *It's not a bug, it's a CRITICAL_PROCESS_DIED error!*

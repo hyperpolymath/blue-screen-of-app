@@ -1,0 +1,23 @@
+# Conforms to RFC 9116 (https://www.rfc-editor.org/rfc/rfc9116.html)
+# security.txt for Blue Screen of App
+
+Contact: https://github.com/Hyperpolymath/blue-screen-of-app/security/advisories/new
+Contact: mailto:security@blue-screen-of-app.example.com
+Expires: 2026-01-15T00:00:00.000Z
+Preferred-Languages: en
+Canonical: https://blue-screen-of-app.example.com/.well-known/security.txt
+
+# Encryption key for secure communications
+# Encryption: https://blue-screen-of-app.example.com/pgp-key.txt
+
+Policy: https://github.com/Hyperpolymath/blue-screen-of-app/blob/main/SECURITY.md
+
+# Security acknowledgments and hall of fame
+Acknowledgments: https://github.com/Hyperpolymath/blue-screen-of-app/blob/main/SECURITY.md#hall-of-fame
+
+# Hiring information
+# Hiring: https://blue-screen-of-app.example.com/careers
+
+# Security researchers are welcome!
+# We follow coordinated disclosure and appreciate responsible vulnerability reports.
+# Please see our security policy for response timelines and expectations.

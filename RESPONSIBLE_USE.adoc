@@ -1,0 +1,184 @@
+= Responsible Use Guidelines
+:toc:
+:icons: font
+
+== The Dual-Use Problem
+
+Blue Screen of App is **dual-use technology**: it can be used for both beneficial and harmful purposes.
+
+=== Intended (Beneficial) Uses
+
+* 😄 **Humor/Entertainment** - Harmless pranks among friends
+* 📚 **Education** - Teaching about error messages and UI design
+* 🎬 **Content Creation** - Screenshots for presentations, videos, documentation
+* 🧪 **Testing/Demos** - UI/UX demonstrations, developer tools
+* 💡 **Developer Culture** - Jokes about common coding frustrations
+
+=== Potential Harmful Uses
+
+* 🎣 **Social Engineering** - Making users believe their system crashed
+* 📞 **Tech Support Scams** - "Call this number to fix your computer"
+* 🔗 **Phishing** - Fake BSOD leading to credential harvesting pages
+* 😰 **Psychological Manipulation** - Creating panic to extract information/money
+* 🚫 **Harassment** - Deliberately causing distress to non-technical users
+
+== The Problem of Unintended Consequences
+
+**We cannot predict all future harms.**
+
+Your chain of reasoning:
+----
+1. Someone installs BSOD prank on friend's phone
+2. Friend panics, gets angry
+3. Friend throws phone, breaking it
+4. Phone kills stray dog
+----
+
+This is theoretically possible. **Every technology has infinite potential chains of causation.**
+
+=== Historical Examples
+
+* **Dynamite** - Nobel invented for mining → used in warfare
+* **Social Media** - Connection tool → radicalization pipeline
+* **Facial Recognition** - Unlock phones → surveillance state
+* **Kitchen Knives** - Cook dinner → murder weapons
+
+**Where do we draw the line?**
+
+== Our Ethical Framework
+
+=== 1. Proximity of Harm
+
+We accept responsibility based on how **foreseeable** the harm is:
+
+* ✅ **Highly foreseeable**: BSOD used for tech support scams
+  - **Our responsibility**: Document this risk, add warnings
+* ⚠️ **Somewhat foreseeable**: User gets angry, damages property
+  - **Shared responsibility**: We warn about pranks, user chooses targets
+* ❌ **Unforeseeable**: Multi-step chains leading to unpredictable outcomes
+  - **Not our responsibility**: Cannot control all possible futures
+
+=== 2. Primary Design Intent
+
+* **Not designed for harm** - Primary purpose is humor/education
+* **Requires modification for weaponization** - Must add deception, modify UI
+* **Transparent implementation** - Open source, clearly documented as joke
+* **Harm signals included** - Humorous error messages make scam use less effective
+
+=== 3. Reasonable Mitigations
+
+What we've done to reduce harm:
+
+* ✅ **Obvious humor signals** - `COFFEE_NOT_FOUND`, `NPM_INSTALL_TIMEOUT`
+* ✅ **No system access** - Purely visual, doesn't touch actual OS
+* ✅ **Transparent code** - Open source, auditable
+* ✅ **Clear documentation** - Explicitly labeled as humor tool
+* ✅ **Educational framing** - RSR/TPCF compliance, security practices
+* ✅ **Responsible disclosure** - RFC 9116 security.txt
+
+== Known Risks & Warnings
+
+=== ⚠️ Tech Support Scams
+
+**Risk**: Scammers could use this BSOD UI to convince users their computer is broken.
+
+**Mitigation**:
+* Humorous error messages make it obviously fake to alert users
+* No phone numbers or "call now" messaging in our code
+* Educational value teaches people to recognize fake errors
+
+**Warning**: Do not modify this to remove humor signals for deceptive purposes.
+
+=== ⚠️ Psychological Distress
+
+**Risk**: Non-technical users may genuinely panic when seeing a BSOD.
+
+**Mitigation**:
+* Clear disclaimer that this is humor/prank software
+* Documentation emphasizes consent and appropriate contexts
+
+**Warning**: Do not use this on people who:
+* Have anxiety disorders
+* Are non-technical and might genuinely panic
+* Are in high-stress situations (exams, job interviews, emergencies)
+* Did not consent to being pranked
+
+=== ⚠️ Professional Contexts
+
+**Risk**: Using this in professional/workplace settings could have consequences.
+
+**Warning**: Do not use this:
+* On employer-owned devices without permission
+* In critical business meetings or presentations
+* On shared/public computers
+* In contexts where it could be mistaken for actual system failure
+
+== What We Cannot Control
+
+**We acknowledge:**
+
+1. **Future modifications** - Someone could fork this and remove humor signals
+2. **Unforeseeable chains** - Infinite possible consequences we cannot predict
+3. **Cultural differences** - What's funny in one context may be harmful in another
+4. **Individual reactions** - Cannot control how each person responds
+
+**We accept** that perfect safety is impossible and that creating nothing also causes harm (no tools, no innovation, no progress).
+
+== Legal Disclaimer
+
+This software is provided "AS IS" without warranty of any kind.
+
+**You are responsible** for:
+* How you use this software
+* Ensuring you have consent from targets of pranks
+* Complying with local laws regarding computer access/fraud
+* Any consequences of misuse
+
+**We are not responsible** for:
+* Unauthorized modifications to this software
+* Uses that violate this responsible use policy
+* Distant or unforeseeable consequences
+* Harm caused by ignoring these warnings
+
+== Reporting Misuse
+
+If you discover this software being used for:
+* Tech support scams
+* Phishing campaigns
+* Harassment
+* Other malicious purposes
+
+Please report to: security@[repository-owner-domain]
+
+Or file an issue: https://github.com/Hyperpolymath/blue-screen-of-app/issues
+
+== The Honest Truth
+
+**We don't know all the ways this might be misused.**
+
+We're releasing this because:
+* Primary intent is benign (humor/education)
+* Foreseeable benefits outweigh foreseeable harms
+* We've taken reasonable precautions
+* Perfect safety is impossible
+* The alternative (creating nothing) also causes harm
+
+**But we acknowledge:**
+* Uncertainty about future uses
+* Limitations of our foresight
+* Discomfort with potential misuse
+* Ongoing responsibility to monitor and respond
+
+== Conclusion
+
+**Use responsibly.**
+
+This is humor software, not a weapon. If you're modifying it to be deceptive, removing humor signals, or using it to cause genuine distress - you're the problem, not the software.
+
+**The technology is neutral. Your choices are not.**
+
+---
+
+_Last updated: 2025-12-04_
+
+_If you have concerns about this framework, please open an issue for discussion._

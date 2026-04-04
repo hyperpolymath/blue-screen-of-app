@@ -1,0 +1,276 @@
+/* TEAM */
+
+/* Project Lead */
+Role: Creator, Lead Developer, Maintainer
+Site: https://github.com/Hyperpolymath/blue-screen-of-app
+Location: [Update with location]
+
+/* Contributors */
+See: https://github.com/Hyperpolymath/blue-screen-of-app/graphs/contributors
+
+/* THANKS */
+
+Inspiration: Every developer who has seen a real BSOD
+Error Messages: The collective frustration and humor of the developer community
+Testing: Anyone who has deployed to production on a Friday
+Easter Eggs: The Konami Code (1986), Konami
+
+/* SITE */
+
+Last Update: 2025-01-15
+Standards: HTML5, CSS3, EJS, Node.js, Express.js
+Components: Winston, Helmet, QRCode, Jest
+IDE: [Your IDE - VS Code, Vim, Emacs, etc.]
+Hosting: Azure Web App
+
+/* SOFTWARE */
+
+Languages:
+    JavaScript (Node.js 18.x)
+    HTML5
+    CSS3
+    EJS (Embedded JavaScript Templates)
+
+Framework:
+    Express.js 4.x
+
+Dependencies:
+    helmet - Security headers
+    compression - Response compression
+    express-rate-limit - API rate limiting
+    cors - Cross-origin resource sharing
+    dotenv - Environment configuration
+    qrcode - QR code generation
+    winston - Logging
+    prom-client - Prometheus metrics
+
+Dev Dependencies:
+    jest - Testing framework
+    supertest - HTTP testing
+    nodemon - Development auto-reload
+    eslint - Code linting
+
+Build Tools:
+    Docker - Containerization
+    Docker Compose - Container orchestration
+    npm - Package management
+    just - Command runner
+    Nix - Reproducible builds
+
+CI/CD:
+    GitHub Actions - Continuous integration
+    Azure Web App - Deployment platform
+
+/* TECHNICAL ARCHITECTURE */
+
+Backend:
+    Node.js 18.x runtime
+    Express.js web framework
+    Winston structured logging
+    In-memory analytics
+    RESTful API design
+
+Frontend:
+    EJS server-side templating
+    Vanilla JavaScript for interactions
+    CSS3 animations and effects
+    Responsive design (mobile-first)
+
+Security:
+    Helmet.js security headers
+    Express rate limiting
+    CORS configuration
+    Input validation
+    No unsafe operations
+
+Performance:
+    gzip compression
+    Static asset caching
+    Efficient routing
+    Docker multi-stage builds
+
+/* DESIGN PHILOSOPHY */
+
+Principles:
+    - Humor with technical excellence
+    - Clean, maintainable code
+    - Comprehensive documentation
+    - Security by design
+    - Performance optimization
+    - Accessibility considerations
+    - Offline-first capable
+
+Humor Style:
+    - Developer-centric jokes
+    - Self-deprecating
+    - Industry in-jokes
+    - Respectful (no offensive content)
+    - Culturally aware
+
+/* BSOD STYLES */
+
+Windows 10:
+    Color: #0178D4
+    Font: Segoe UI
+    Era: 2015-2021
+    Features: Sad face emoji, modern sans-serif
+
+Windows 11:
+    Color: #0067C0
+    Font: Segoe UI Variable
+    Era: 2021-present
+    Features: Refined typography, subtle patterns
+
+Windows 7/8:
+    Color: #00579e
+    Font: Lucida Console
+    Era: 2009-2015
+    Features: Monospace, progress bar, technical details
+
+Windows XP:
+    Color: #0000AA
+    Font: Perfect DOS VGA 437
+    Era: 2001-2014
+    Features: Retro DOS font, scanline effects, CRT flicker
+
+/* ERROR MESSAGES */
+
+Count: 27+ error codes
+
+Categories:
+    - Standard Windows Errors
+    - Developer Humor Errors
+    - JavaScript Errors
+    - DevOps Errors
+    - Git/Version Control Errors
+
+Favorites:
+    - COFFEE_NOT_FOUND
+    - PRODUCTION_DEPLOYMENT_ON_FRIDAY
+    - NPM_INSTALL_TIMEOUT
+    - STACKOVERFLOW_COPY_PASTE_ERROR
+    - MERGE_CONFLICT_ANXIETY
+    - UNDEFINED_IS_NOT_A_FUNCTION
+
+/* EASTER EGGS */
+
+Konami Code:
+    Input: ↑↑↓↓←→←→BA
+    Effect: Screen turns green temporarily
+    Styles: Win10, Win11
+
+Keyboard Shortcuts:
+    W - Switch to Windows XP (from Win11)
+    7 - Switch to Windows 7 (from Win11)
+    ESC - Switch to Windows 11 (from WinXP)
+    F8 - Switch to Windows 7 (from WinXP)
+
+Visual Effects:
+    - Progress bars that slowly increase
+    - Random screen glitches (WinXP)
+    - CRT scanline effect (WinXP)
+    - CRT flicker animation (WinXP)
+
+/* COMPLIANCE */
+
+Standards:
+    - Rhodium Standard Repository (RSR) Framework
+    - Tri-Perimeter Contribution Framework (TPCF)
+    - RFC 9116 (security.txt)
+    - Semantic Versioning (SemVer)
+    - Keep a Changelog format
+    - Conventional Commits
+    - OWASP Top 10 security
+    - WCAG 2.1 accessibility guidelines
+
+Licenses:
+    - MIT License
+    - Palimpsest License v0.8 (dual-licensed)
+
+Code of Conduct:
+    - Contributor Covenant 2.0
+    - Inclusive and welcoming
+    - Humor without offense
+
+/* COMMUNITY */
+
+Repository: https://github.com/Hyperpolymath/blue-screen-of-app
+Issues: https://github.com/Hyperpolymath/blue-screen-of-app/issues
+Discussions: https://github.com/Hyperpolymath/blue-screen-of-app/discussions
+Security: See .well-known/security.txt
+Contributing: See CONTRIBUTING.md
+Code of Conduct: See CODE_OF_CONDUCT.md
+
+/* RECOGNITION */
+
+Hall of Fame:
+    - Security researchers (See SECURITY.md)
+    - Contributors (See GitHub contributors page)
+    - Community members who provided feedback
+
+Thank You:
+    - All who reported issues
+    - All who submitted PRs
+    - All who starred the repo
+    - All who shared the project
+    - The amazing open source community!
+
+/* ANALYTICS */
+
+Metrics Tracked:
+    - Total page visits
+    - Style preferences
+    - Error code popularity
+    - Custom messages count
+    - API usage
+    - Application uptime
+
+Privacy:
+    - No personal data collected
+    - No cookies used
+    - No external tracking
+    - In-memory analytics only
+    - No data sold or shared
+
+/* FUN FACTS */
+
+Development Time: Completed in one intensive session
+Lines of Code: 4,370+ (including tests and docs)
+Test Coverage: High (unit + integration tests)
+Docker Image Size: Optimized with multi-stage builds
+Humorous Error Messages: 27+
+BSOD Styles: 4 (covering 2001-present)
+Easter Eggs: 6+
+Documentation Pages: 8 comprehensive files
+
+/* INSPIRATIONAL QUOTES */
+
+"It's not a bug, it's a CRITICAL_PROCESS_DIED error!"
+"COFFEE_NOT_FOUND - Please insert coffee and press any key to continue."
+"Your node_modules folder achieved sentience and is demanding rights."
+"npm install has been running for 3 hours. Heat death of universe expected."
+
+/* CONTACT */
+
+Project: https://github.com/Hyperpolymath/blue-screen-of-app
+Email: [Update with contact email]
+Security: See .well-known/security.txt
+AI Policy: See .well-known/ai.txt
+
+/* MADE WITH */
+
+Love: ♥
+Coffee: ☕
+Humor: 😄
+Blue Screens: 💙
+Late Nights: 🌙
+Testing: 🧪
+Documentation: 📚
+
+/* SPECIAL THANKS */
+
+To all developers who have experienced a real BSOD and turned frustration into humor.
+To the open source community for making projects like this possible.
+To you, for reading all the way to the end of this humans.txt file!
+
+Remember: It's not a bug, it's a CRITICAL_PROCESS_DIED error! 💙

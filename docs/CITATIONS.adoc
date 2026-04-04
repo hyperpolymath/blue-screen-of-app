@@ -1,0 +1,36 @@
+= Blue-Screen-of-App - Citation Guide
+:toc:
+
+== BibTeX
+
+[source,bibtex]
+----
+@software{blue-screen-of-app_2025,
+  author = {Polymath, Hyper},
+  title = {Blue-Screen-of-App},
+  year = {2025},
+  url = {https://github.com/hyperpolymath/Blue-Screen-of-App},
+  license = {PMPL-1.0-or-later}
+}
+----
+
+== Harvard Style
+
+Polymath, H. (2025) _Blue-Screen-of-App_ [Computer software]. Available at: https://github.com/hyperpolymath/Blue-Screen-of-App
+
+== OSCOLA
+
+Hyper Polymath, 'Blue-Screen-of-App' (2025) <https://github.com/hyperpolymath/Blue-Screen-of-App>
+
+== MLA
+
+Polymath, Hyper. "Blue-Screen-of-App." 2025, github.com/hyperpolymath/Blue-Screen-of-App.
+
+== APA 7
+
+Polymath, H. (2025). _Blue-Screen-of-App_ [Computer software]. GitHub. https://github.com/hyperpolymath/Blue-Screen-of-App
+
+== See Also
+
+* link:../CITATION.cff[CITATION.cff]
+* link:../codemeta.json[codemeta.json]

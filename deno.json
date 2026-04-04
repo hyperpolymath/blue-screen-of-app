@@ -1,0 +1,48 @@
+{
+  "name": "blue-screen-of-app",
+  "version": "2.0.0",
+  "description": "A humorous web application that displays a blue screen - does exactly what it says on the tin!",
+  "exports": "./src/server.js",
+  "tasks": {
+    "build": "bash scripts/build.sh",
+    "start": "deno run --allow-net --allow-read --allow-env src/server.js",
+    "dev": "deno run --allow-net --allow-read --allow-env --watch src/server.js",
+    "dev:443": "sudo deno run --allow-net --allow-read --allow-env --watch src/server.js",
+    "test": "deno test --allow-net --allow-read --allow-env --coverage",
+    "test:watch": "deno test --allow-net --allow-read --allow-env --watch",
+    "lint": "deno lint src/server.js",
+    "fmt": "deno fmt src/server.js",
+    "fmt:check": "deno fmt --check src/server.js",
+    "cache": "deno cache src/server.js",
+    "bundle": "deno bundle src/server.js dist/bundle.js",
+    "compile": "deno compile --allow-net --allow-read --allow-env --output bin/bsod src/server.js"
+  },
+  "imports": {},
+  "compilerOptions": {
+    "allowJs": true,
+    "lib": ["deno.window"],
+    "strict": true
+  },
+  "lint": {
+    "rules": {
+      "tags": ["recommended"]
+    }
+  },
+  "fmt": {
+    "useTabs": false,
+    "lineWidth": 100,
+    "indentWidth": 2,
+    "semiColons": true,
+    "singleQuote": true,
+    "proseWrap": "preserve"
+  },
+  "test": {
+    "include": ["tests/"]
+  },
+  "exclude": [
+    "node_modules",
+    "dist",
+    "coverage"
+  ],
+  "lock": false
+}

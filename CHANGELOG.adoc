@@ -1,0 +1,207 @@
+= Changelog
+
+All notable changes to this project will be documented in this file.
+
+The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
+and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+
+== [Unreleased]
+
+=== Added
+* RSR (Rhodium Standard Repository) framework compliance
+* SECURITY.md with comprehensive security policies
+* MAINTAINERS.md with governance documentation
+* .well-known directory with RFC 9116 security.txt, ai.txt, humans.txt
+* justfile with 20+ build recipes for development tasks
+* flake.nix for Nix reproducible builds
+* TPCF Perimeter 3 documentation for community contributions
+* JSDoc type annotations for improved type safety
+
+=== Changed
+* Updated CLAUDE.md with RSR compliance information
+* Enhanced documentation for offline-first capabilities
+
+=== Security
+* Documented security policies and procedures
+* Added security contact information in .well-known/security.txt
+
+== [1.0.0] - 2025-01-15
+
+=== Added
+* Express.js web server with comprehensive middleware stack
+* Four authentic BSOD styles (Windows 10, 11, 7, XP)
+* 27+ humorous developer-themed error messages
+* Complete REST API with 8 endpoints
+* QR code generation with configurable URLs
+* In-memory analytics system with Prometheus metrics
+* Winston logging system (file + console)
+* Comprehensive test suite (Jest + Supertest)
+* Unit tests for utilities (errorMessages, analytics)
+* Integration tests for API and routes
+* Docker support with multi-stage builds
+* Docker Compose configuration
+* Security features (Helmet, rate limiting, CORS)
+* Performance optimizations (compression, caching)
+* README.md with complete usage documentation
+* API.md with full API reference
+* CLAUDE.md with architecture documentation
+* CONTRIBUTING.md with contribution guidelines
+* CODE_OF_CONDUCT.md for community standards
+* .env.example with configuration template
+* .gitignore for Node.js projects
+* .dockerignore for Docker builds
+* Azure Web App deployment workflow
+
+=== Features
+
+==== Web Interface
+* Windows 10 style: Modern blue with sad face emoji
+* Windows 11 style: Refined design with subtle patterns
+* Windows 7/8 style: Classic monospace with progress bar
+* Windows XP style: Retro DOS font with CRT effects
+* Responsive design for mobile devices
+* Interactive progress bars that slowly increase
+* Keyboard shortcuts for style switching
+* Easter eggs (Konami code, style switchers)
+* Customizable via URL parameters (style, code, message, percentage, QR)
+
+==== REST API
+* `GET /` - Display BSOD with customization options
+* `GET /random` - Redirect to random BSOD style
+* `GET /api/error` - Get random error data
+* `GET /api/error/:code` - Get specific error by code
+* `GET /api/codes` - List all available error codes
+* `GET /api/styles` - List all available styles
+* `GET /api/analytics` - Get usage statistics
+* `POST /api/analytics/reset` - Reset analytics (dev only)
+* `GET /api/health` - Health check endpoint
+* `GET /api/metrics` - Prometheus metrics export
+
+==== Error Messages
+* Standard Windows errors (CRITICAL_PROCESS_DIED, etc.)
+* Developer humor errors (COFFEE_NOT_FOUND, NPM_INSTALL_TIMEOUT, etc.)
+* COFFEE_NOT_FOUND - Critical system resource missing
+* PRODUCTION_DEPLOYMENT_ON_FRIDAY - The cardinal sin
+* NPM_INSTALL_TIMEOUT - Heat death of universe expected
+* STACKOVERFLOW_COPY_PASTE_ERROR - Malicious solutions detected
+* MERGE_CONFLICT_ANXIETY - Unresolved conflicts
+* UNDEFINED_IS_NOT_A_FUNCTION - Classic JavaScript error
+* And 20+ more!
+
+==== Configuration
+* Environment-based configuration
+* Centralized config management (src/config/index.js)
+* Feature flags for analytics, QR codes
+* Configurable rate limiting
+* Adjustable logging levels
+* CORS origin configuration
+* Helmet security settings
+
+==== Security
+* Helmet.js security headers
+* Rate limiting (100 requests per 15 minutes per IP)
+* CORS with configurable origins
+* Input validation and sanitization
+* Global error handling
+* No sensitive data exposure
+* Docker non-root user
+
+==== Performance
+* gzip compression on all responses
+* Efficient Express routing
+* Docker multi-stage builds for smaller images
+* Static asset caching
+* Asynchronous Winston logging
+
+==== Testing
+* Unit tests: errorMessages, analytics
+* Integration tests: API endpoints, BSOD routes
+* Code coverage reporting
+* Test watch mode for development
+* Mock-based testing for external dependencies
+
+==== DevOps
+* Dockerfile with multi-stage build
+* Docker Compose with health checks
+* Non-root user in containers
+* dumb-init for signal handling
+* Volume mounting for logs
+* Azure deployment workflow
+* Automatic builds and deployments
+
+==== Documentation
+* README.md: Quick start, usage examples, configuration
+* API.md: Complete API reference with examples
+* CLAUDE.md: Architecture and implementation details
+* CONTRIBUTING.md: Contribution process and guidelines
+* CODE_OF_CONDUCT.md: Community standards
+
+=== Changed
+* Updated .gitignore from Erlang to Node.js
+* Enhanced README from simple description to comprehensive guide
+
+=== Technical Details
+* **Runtime**: Node.js 18.x
+* **Framework**: Express.js 4.x
+* **View Engine**: EJS
+* **Testing**: Jest + Supertest
+* **Logging**: Winston
+* **Containerization**: Docker + Docker Compose
+* **Deployment**: Azure Web App
+* **CI/CD**: GitHub Actions
+
+== [0.1.0] - 2025-01-14
+
+=== Added
+* Initial project setup
+* Basic README.md
+* MIT License
+* Azure Web App deployment workflow (.github/workflows/main_sweb-app.yml)
+* Basic .gitignore (Erlang-based, later updated)
+
+---
+
+== Version History Summary
+
+* **1.0.0** (2025-01-15): Full production release with complete feature set
+* **0.1.0** (2025-01-14): Initial project setup
+
+== Upgrade Guide
+
+=== From 0.1.0 to 1.0.0
+
+This is the first production release. If you had the initial skeleton:
+
+1. Pull latest changes
+2. Run `npm install` to install all dependencies
+3. Copy `.env.example` to `.env` and configure
+4. Run `npm start` to start the server
+5. Visit `http://localhost:3000` to see the BSOD
+
+=== Breaking Changes
+
+None (initial release)
+
+== Deprecations
+
+None
+
+== Future Plans
+
+See [README.md](README.md#roadmap) for planned features:
+
+* Additional language translations
+* macOS kernel panic style
+* Linux kernel panic style
+* Custom color themes
+* Sound effects (optional)
+* Screenshot API endpoint
+* Social sharing buttons
+* BSOD history/gallery
+* WebSocket support for live updates
+
+---
+
+[Unreleased]: https://github.com/Hyperpolymath/blue-screen-of-app/compare/v1.0.0...HEAD
+[1.0.0]: https://github.com/Hyperpolymath/blue-screen-of-app/releases/tag/v1.0.0
+[0.1.0]: https://github.com/Hyperpolymath/blue-screen-of-app/releases/tag/v0.1.0

@@ -1,0 +1,59 @@
+# SPDX-License-Identifier: PMPL-1.0-or-later
+# Azure deployment (Deno-based)
+name: Deploy to Azure
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions: read-all
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
+
+      - uses: denoland/setup-deno@5fae568d37c3b73449009674875529a984555dd1 # v2.0.2
+        with:
+          deno-version: v1.x
+
+      - name: Build
+        run: |
+          cat > config.json <<'EOF'
+          {"server":{"port":8080},"app":{"name":"BSOD"}}
+          EOF
+          deno cache src/server.js
+
+      - uses: actions/upload-artifact@b4b15b8c7c6ac21ea08fcf65892d2ee8f75cf882 # v4.4.3
+        with:
+          name: deno-app
+          path: |
+            src/
+            config.json
+            deno.json
+
+  deploy:
+    runs-on: ubuntu-latest
+    needs: build
+    permissions:
+      contents: read
+    environment:
+      name: 'Production'
+      url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
+
+    steps:
+      - uses: actions/download-artifact@fa0a91b85d4f404e444e00e005971372dc801d16 # v4.1.8
+        with:
+          name: deno-app
+
+      - uses: azure/webapps-deploy@2fdd5c3ebb4f540834e86ecc1f6fdcd5539023ee # v3.0.2
+        id: deploy-to-webapp
+        with:
+          app-name: 'sweb-app'
+          slot-name: 'Production'
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_886E1A580FA745B6BF6A2700A3C4197A }}
+          package: .

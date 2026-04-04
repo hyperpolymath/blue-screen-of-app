@@ -1,0 +1,29 @@
+= API Quick Reference
+
+== Base URL
+`http://localhost:8080`
+
+== Endpoints
+
+**BSOD Pages**:
+- `GET /` - Main BSOD (query: style, code, message, technical, percentage, qr)
+- `GET /random` - Random style redirect
+
+**API**:
+- `GET /api/error` - Random error JSON
+- `GET /api/error/{code}` - Specific error JSON
+- `GET /api/codes` - List all error codes
+- `GET /api/styles` - List all styles
+- `GET /api/health` - Health check
+- `GET /api/analytics` - Usage stats
+- `POST /api/analytics/reset` - Reset stats
+
+== Example
+
+[source,bash]
+----
+curl http://localhost:8080/api/error
+curl http://localhost:8080/?style=winxp&code=COFFEE_NOT_FOUND
+----
+
+See README.adoc for full documentation.

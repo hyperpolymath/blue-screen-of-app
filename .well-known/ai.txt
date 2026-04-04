@@ -1,0 +1,201 @@
+# AI Training and Usage Policy
+# https://github.com/Spawning-Inc/ai.txt
+
+# Blue Screen of App - AI Training Policy
+# Last Updated: 2025-01-15
+
+# =============================================================================
+# AI TRAINING PERMISSIONS
+# =============================================================================
+
+# This project permits AI training under specific conditions aligned with
+# our open source mission and Rhodium Standard Repository (RSR) framework.
+
+# Permitted Use: YES (with conditions)
+User-Agent: *
+Allow: /
+
+# =============================================================================
+# TRAINING DATA USAGE
+# =============================================================================
+
+# Source Code
+# - Training on source code is PERMITTED
+# - Must preserve attribution (see LICENSE)
+# - Must respect dual licensing (MIT + Palimpsest v0.8)
+# - Derived works must maintain license compatibility
+
+# Documentation
+# - Training on documentation is PERMITTED
+# - Educational use strongly encouraged
+# - Attribution appreciated but not required for documentation
+
+# Error Messages
+# - Training on humorous error messages is PERMITTED
+# - These are creative expressions meant to be shared
+# - Citation appreciated if used in training materials
+
+# =============================================================================
+# ATTRIBUTION REQUIREMENTS
+# =============================================================================
+
+# If using this project for AI training, we request:
+# 1. Link to original repository: https://github.com/Hyperpolymath/blue-screen-of-app
+# 2. Mention original author(s) in model cards or documentation
+# 3. Preserve license information in generated code
+
+# =============================================================================
+# PROHIBITED USES
+# =============================================================================
+
+# The following uses are NOT permitted:
+# 1. Training models to generate malware or phishing content
+# 2. Using BSOD screens for actual malicious purposes
+# 3. Removing or obscuring license information
+# 4. Training on any private data (none exists in this repo)
+
+# =============================================================================
+# SPECIFIC AI PLATFORMS
+# =============================================================================
+
+# OpenAI (GPT models)
+# Status: PERMITTED
+# Conditions: Preserve attribution, respect licenses
+
+# Anthropic (Claude models)
+# Status: PERMITTED
+# Conditions: Preserve attribution, respect licenses
+
+# Google (Gemini, Bard)
+# Status: PERMITTED
+# Conditions: Preserve attribution, respect licenses
+
+# Meta (Llama models)
+# Status: PERMITTED
+# Conditions: Preserve attribution, respect licenses
+
+# GitHub Copilot
+# Status: PERMITTED
+# Conditions: Follow GitHub's attribution guidelines
+
+# Amazon CodeWhisperer
+# Status: PERMITTED
+# Conditions: Preserve attribution, respect licenses
+
+# JetBrains AI Assistant
+# Status: PERMITTED
+# Conditions: Preserve attribution, respect licenses
+
+# Tabnine
+# Status: PERMITTED
+# Conditions: Preserve attribution, respect licenses
+
+# Sourcegraph Cody
+# Status: PERMITTED
+# Conditions: Preserve attribution, respect licenses
+
+# =============================================================================
+# SYNTHETIC DATA GENERATION
+# =============================================================================
+
+# AI models may generate:
+# - Additional humorous error messages (encouraged!)
+# - Documentation improvements
+# - Code examples and tutorials
+# - Translations to other languages
+# - Test cases and scenarios
+
+# All synthetic data should:
+# - Maintain project tone (humorous but respectful)
+# - Follow CODE_OF_CONDUCT.md guidelines
+# - Preserve attribution to original work
+
+# =============================================================================
+# RESEARCH AND ACADEMIC USE
+# =============================================================================
+
+# This project explicitly PERMITS:
+# - Academic research on software humor
+# - Studies on developer experience
+# - Analysis of error message effectiveness
+# - Educational materials and tutorials
+# - Code generation research
+
+# We request:
+# - Citation in academic papers
+# - Sharing of interesting findings with maintainers
+# - Contributing improvements back to the project
+
+# =============================================================================
+# ETHICAL CONSIDERATIONS
+# =============================================================================
+
+# When training on this project, please consider:
+# 1. This is a humor/satire project - context matters
+# 2. BSOD screens can cause anxiety - use responsibly
+# 3. Some error messages reference specific developer cultures
+# 4. Not all humor translates across cultures
+
+# =============================================================================
+# OPT-OUT MECHANISM
+# =============================================================================
+
+# If specific AI platforms need to opt-out, contact:
+# - GitHub Issues: https://github.com/Hyperpolymath/blue-screen-of-app/issues
+# - Email: ai-policy@blue-screen-of-app.example.com
+
+# We will update this file to reflect specific opt-outs.
+
+# Currently, no platforms are opted-out.
+
+# =============================================================================
+# UPDATES TO THIS POLICY
+# =============================================================================
+
+# This policy may be updated to reflect:
+# - New AI platforms and tools
+# - Community feedback
+# - Legal requirements
+# - Best practices evolution
+
+# Version: 1.0.0
+# Last Updated: 2025-01-15
+# Next Review: 2025-07-15
+
+# =============================================================================
+# COMPATIBILITY WITH RSR FRAMEWORK
+# =============================================================================
+
+# This AI policy is designed to be compatible with:
+# - Rhodium Standard Repository (RSR) Framework
+# - Tri-Perimeter Contribution Framework (TPCF)
+# - Palimpsest License v0.8
+# - Open Source Initiative principles
+
+# =============================================================================
+# CONTACT
+# =============================================================================
+
+# For questions about this AI policy:
+# - Repository: https://github.com/Hyperpolymath/blue-screen-of-app
+# - Issues: https://github.com/Hyperpolymath/blue-screen-of-app/issues
+# - Email: ai-policy@blue-screen-of-app.example.com
+
+# =============================================================================
+# HUMANS.TXT
+# =============================================================================
+
+# For human-readable attribution information, see:
+# https://blue-screen-of-app.example.com/.well-known/humans.txt
+
+# =============================================================================
+# ACKNOWLEDGMENTS
+# =============================================================================
+
+# This ai.txt format is inspired by:
+# - Spawning AI's ai.txt initiative
+# - robots.txt standard
+# - Creative Commons licensing practices
+# - Open Source AI Definition (OSAID)
+
+# Thank you to the AI research community for promoting responsible AI development!

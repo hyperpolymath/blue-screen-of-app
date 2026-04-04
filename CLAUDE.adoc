@@ -1,0 +1,559 @@
+= Blue Screen of App - Project Documentation
+
+== Project Overview
+
+Blue Screen of App is a production-ready, feature-rich web application that displays authentic-looking Blue Screen of Death (BSOD) errors from various Windows versions. What started as a simple humorous concept has been developed into a comprehensive, well-architected application with extensive features, testing, and deployment capabilities.
+
+== Tech Stack
+
+=== Core Technologies
+* **Runtime**: Node.js 18.x
+* **Framework**: Express.js 4.x
+* **View Engine**: EJS (Embedded JavaScript Templates)
+* **Testing**: Jest + Supertest
+* **Logging**: Winston
+* **Containerization**: Docker + Docker Compose
+* **Deployment**: Azure Web App (sweb-app)
+* **CI/CD**: GitHub Actions
+
+=== Key Dependencies
+* `express` - Web framework
+* `helmet` - Security headers
+* `compression` - Response compression
+* `express-rate-limit` - API rate limiting
+* `cors` - Cross-origin resource sharing
+* `dotenv` - Environment configuration
+* `qrcode` - QR code generation
+* `winston` - Logging
+* `prom-client` - Prometheus metrics
+
+== Architecture
+
+=== Directory Structure
+
+```
+blue-screen-of-app/
+├── .github/
+│   └── workflows/
+│       └── main_sweb-app.yml      # Azure deployment workflow
+├── src/
+│   ├── config/
+│   │   └── index.js               # Centralized configuration
+│   ├── middleware/
+│   │   ├── errorHandler.js        # Global error handling
+│   │   └── requestLogger.js       # HTTP request logging
+│   ├── routes/
+│   │   ├── api.js                 # REST API endpoints
+│   │   └── bsod.js                # Web interface routes
+│   ├── utils/
+│   │   ├── analytics.js           # In-memory analytics
+│   │   ├── errorMessages.js       # Error codes and messages
+│   │   └── logger.js              # Winston logger configuration
+│   ├── views/
+│   │   ├── bsod-win10.ejs        # Windows 10 style template
+│   │   ├── bsod-win11.ejs        # Windows 11 style template
+│   │   ├── bsod-win7.ejs         # Windows 7/8 style template
+│   │   └── bsod-winxp.ejs        # Windows XP style template
+│   ├── public/                    # Static assets (CSS, JS)
+│   │   ├── css/
+│   │   └── js/
+│   └── server.js                  # Application entry point
+├── tests/
+│   ├── unit/
+│   │   ├── analytics.test.js     # Analytics unit tests
+│   │   └── errorMessages.test.js # Error message tests
+│   └── integration/
+│       ├── api.test.js           # API endpoint tests
+│       └── bsod.test.js          # BSOD route tests
+├── logs/                          # Application logs (auto-created)
+├── .env.example                   # Environment template
+├── .gitignore                     # Git ignore rules
+├── .dockerignore                  # Docker ignore rules
+├── Dockerfile                     # Docker configuration
+├── docker-compose.yml             # Docker Compose setup
+├── package.json                   # Dependencies and scripts
+├── API.md                         # API documentation
+├── CLAUDE.md                      # This file
+├── CONTRIBUTING.md                # Contribution guidelines
+├── CODE_OF_CONDUCT.md            # Code of conduct
+├── LICENSE                        # MIT License
+└── README.md                      # User documentation
+```
+
+== Core Features
+
+=== 1. Multiple BSOD Styles
+
+Four authentic BSOD styles, each with period-appropriate styling:
+
+==== Windows 10 (Default)
+* **File**: `src/views/bsod-win10.ejs`
+* **Color**: #0178D4 (Windows 10 blue)
+* **Features**: Sad face emoji, modern sans-serif font, clean layout
+* **Easter Egg**: Konami code turns screen green
+
+==== Windows 11
+* **File**: `src/views/bsod-win11.ejs`
+* **Color**: #0067C0 (Windows 11 blue)
+* **Features**: Refined typography, subtle background pattern
+* **Easter Eggs**: Press 'W' for XP, '7' for Win7
+
+==== Windows 7/8
+* **File**: `src/views/bsod-win7.ejs`
+* **Color**: #00579e (Windows 7 blue)
+* **Features**: Monospace font, progress bar with blinking cursor
+* **Details**: Technical memory dump simulation
+
+==== Windows XP
+* **File**: `src/views/bsod-winxp.ejs`
+* **Color**: #0000AA (Classic Windows blue)
+* **Features**: Retro DOS font, scanline effect, CRT flicker
+* **Easter Eggs**: ESC for Win11, F8 for Win7, random screen glitches
+
+=== 2. Error Message System
+
+*File*: `src/utils/errorMessages.js`
+
+Manages 27+ error codes in three categories:
+
+==== Standard Windows Errors
+* Authentic error codes like `CRITICAL_PROCESS_DIED`
+* Based on real Windows BSOD errors
+
+==== Developer Humor Errors
+* `COFFEE_NOT_FOUND` - Critical system resource missing
+* `NPM_INSTALL_TIMEOUT` - npm running for 3 hours
+* `PRODUCTION_DEPLOYMENT_ON_FRIDAY` - The cardinal sin
+* `STACKOVERFLOW_COPY_PASTE_ERROR` - Malicious solutions detected
+* `MERGE_CONFLICT_ANXIETY` - Unresolved conflicts
+* `UNDEFINED_IS_NOT_A_FUNCTION` - Classic JavaScript error
+* And 20+ more!
+
+==== Functions
+* `getRandomError()` - Returns random error configuration
+* `getErrorByCode(code)` - Returns specific error (case-insensitive)
+
+=== 3. REST API
+
+*File*: `src/routes/api.js`
+
+Comprehensive API for programmatic BSOD generation:
+
+==== Endpoints
+
+| Endpoint | Method | Purpose |
+|----------|--------|---------|
+| `/api/error` | GET | Get random error data |
+| `/api/error/:code` | GET | Get specific error by code |
+| `/api/codes` | GET | List all available error codes |
+| `/api/styles` | GET | List all available visual styles |
+| `/api/analytics` | GET | Get usage statistics |
+| `/api/analytics/reset` | POST | Reset analytics (dev only) |
+| `/api/health` | GET | Health check endpoint |
+| `/api/metrics` | GET | Prometheus metrics |
+
+=== 4. Analytics System
+
+*File*: `src/utils/analytics.js`
+
+In-memory analytics tracking:
+
+==== Tracked Metrics
+* Total page visits
+* Style views breakdown
+* Error code views
+* Custom message count
+* API call count
+* Application uptime
+
+==== Features
+* Prometheus metrics export
+* Configurable via environment
+* Thread-safe singleton pattern
+* Reset capability for development
+
+=== 5. Security Features
+
+==== Helmet.js
+* **File**: `src/server.js`
+* Security headers (CSP disabled for inline styles)
+* XSS protection
+* MIME type sniffing prevention
+
+==== Rate Limiting
+* Applied to all `/api/*` endpoints
+* Default: 100 requests per 15 minutes per IP
+* Configurable via environment variables
+* Returns 429 status when exceeded
+
+==== CORS
+* Configurable origin
+* Default: Allow all origins (customizable)
+
+==== Input Validation
+* Query parameter sanitization
+* Percentage clamping (0-100)
+* Error code normalization
+
+=== 6. Logging System
+
+*File*: `src/utils/logger.js`
+
+Winston-based structured logging:
+
+==== Log Levels
+* `error` - Error events
+* `warn` - Warning events
+* `info` - Informational messages
+* `debug` - Debug information
+
+==== Transports
+* Console (development)
+* File: `logs/error.log` (errors only)
+* File: `logs/combined.log` (all logs)
+
+==== Features
+* Timestamp on all logs
+* JSON format for parsing
+* Stack traces for errors
+* Service name tagging
+
+=== 7. Configuration Management
+
+*File*: `src/config/index.js`
+
+Centralized environment configuration:
+
+```javascript
+{
+  server: { port, env },
+  app: { name, url },
+  rateLimit: { windowMs, max },
+  logging: { level },
+  features: { analytics, qrCodes, defaultQrUrl },
+  security: { corsOrigin, helmetEnabled }
+}
+```
+
+=== 8. Customization Options
+
+==== Web Interface Parameters
+* `style` - Visual style (win10, win11, win7, winxp)
+* `code` - Specific error code
+* `message` - Custom error message
+* `technical` - Custom technical detail
+* `qr` - Custom QR code URL
+* `percentage` - Completion percentage (0-100)
+* `lang` - Language code (future use)
+
+==== Example
+```
+http://localhost:3000/?style=winxp&code=COFFEE_NOT_FOUND&percentage=42
+```
+
+=== 9. QR Code Generation
+
+*Integration*: `qrcode` package
+*Location*: `src/routes/bsod.js`
+
+Features:
+* Generated dynamically per request
+* Configurable URL
+* Embedded as data URL in templates
+* Optional (can be disabled)
+* 150x150px with minimal margin
+
+=== 10. Testing Infrastructure
+
+==== Unit Tests
+*Files*: `tests/unit/*.test.js`
+
+* Error message utility tests
+* Analytics utility tests
+* Mock-based for external dependencies
+* 100% coverage of utility functions
+
+==== Integration Tests
+*Files*: `tests/integration/*.test.js`
+
+* API endpoint testing
+* BSOD route testing
+* Full request/response cycle
+* Status code validation
+* Response body validation
+
+==== Test Configuration
+*File*: `package.json` (jest config)
+
+```json
+{
+  "testEnvironment": "node",
+  "coverageDirectory": "coverage",
+  "collectCoverageFrom": ["src/**/*.js", "!src/server.js"]
+}
+```
+
+== Docker Configuration
+
+=== Multi-Stage Build
+
+*File*: `Dockerfile`
+
+==== Builder Stage
+* Node.js 18 Alpine base
+* Installs production dependencies only
+* Optimized for size
+
+==== Production Stage
+* Non-root user (nodejs:nodejs)
+* dumb-init for proper signal handling
+* Health check configured
+* Exposes port 3000
+
+=== Docker Compose
+
+*File*: `docker-compose.yml`
+
+Features:
+* Environment variable configuration
+* Volume mounting for logs
+* Health check configuration
+* Bridge networking
+* Restart policy
+
+== Deployment
+
+=== Azure Web App
+
+*Workflow*: `.github/workflows/main_sweb-app.yml`
+
+==== Build Job (Windows)
+1. Checkout code
+2. Setup Node.js 18.x
+3. Run `npm install`
+4. Run `npm run build --if-present`
+5. Run `npm run test --if-present`
+6. Upload artifacts
+
+==== Deploy Job (Ubuntu)
+1. Download artifacts
+2. Deploy to Azure Web App 'sweb-app'
+3. Use publish profile from secrets
+
+=== Environment Variables
+
+All configurable via `.env` file:
+* Server settings (port, environment)
+* Application settings (name, URL)
+* Rate limiting configuration
+* Logging level
+* Feature flags
+* Security settings
+
+== Performance Optimizations
+
+1. **Compression** - gzip compression on all responses
+2. **Static Asset Caching** - Efficient serving of CSS/JS
+3. **Docker Multi-stage** - Smaller production images
+4. **Efficient Routing** - Express best practices
+5. **Winston Logging** - Asynchronous, non-blocking logs
+
+== Error Handling
+
+=== Global Error Handler
+
+*File*: `src/middleware/errorHandler.js`
+
+* Catches all unhandled errors
+* Logs with Winston
+* Returns appropriate status codes
+* Hides stack traces in production
+* JSON error responses
+
+=== 404 Handler
+
+* Custom 404 responses
+* JSON format for consistency
+* Logs missing routes
+
+== Middleware Chain
+
+1. **Helmet** - Security headers
+2. **CORS** - Cross-origin handling
+3. **Compression** - Response compression
+4. **Rate Limiting** - Applied to /api routes
+5. **Body Parsing** - JSON and URL-encoded
+6. **Request Logging** - Log all HTTP requests
+7. **Static Files** - Serve from /public
+8. **Routes** - API and BSOD routes
+9. **404 Handler** - Not found routes
+10. **Error Handler** - Global error handling
+
+== Easter Eggs
+
+=== Konami Code (Win10/Win11)
+* **Input**: ↑↑↓↓←→←→BA
+* **Effect**: Screen turns green momentarily
+
+=== Keyboard Shortcuts
+* **W key** (Win11): Switch to Windows XP
+* **7 key** (Win11): Switch to Windows 7
+* **ESC** (WinXP): Switch to Windows 11
+* **F8** (WinXP): Switch to Windows 7
+
+=== Visual Effects
+* **Progress bars**: Slowly increase over time
+* **WinXP glitch**: Random screen shake
+* **Scanline effect**: CRT-style scanlines
+* **CRT flicker**: Authentic monitor flicker
+
+== Development Workflow
+
+=== Scripts
+
+```json
+{
+  "start": "node src/server.js",
+  "dev": "nodemon src/server.js",
+  "test": "jest --coverage",
+  "test:watch": "jest --watch",
+  "lint": "eslint src/**/*.js",
+  "lint:fix": "eslint src/**/*.js --fix"
+}
+```
+
+=== Development Commands
+
+```bash
+= Install dependencies
+npm install
+
+= Run in development mode
+npm run dev
+
+= Run tests
+npm test
+
+= Run tests in watch mode
+npm run test:watch
+
+= Lint code
+npm run lint
+
+= Fix linting issues
+npm run lint:fix
+```
+
+== API Rate Limiting
+
+*Applied to*: All `/api/*` endpoints
+
+Configuration:
+* Window: 15 minutes (900000ms)
+* Max requests: 100 per window
+* Per IP address
+* Returns 429 when exceeded
+
+== Monitoring
+
+=== Health Check
+*Endpoint*: `GET /api/health`
+
+Returns:
+* Success status
+* Timestamp
+* Uptime information
+* Application version
+
+=== Metrics
+*Endpoint*: `GET /api/metrics`
+
+Prometheus-formatted metrics:
+* `bsod_total_visits` - Total page visits
+* `bsod_api_calls` - Total API calls
+* `bsod_custom_messages` - Custom message count
+* `bsod_uptime_seconds` - Application uptime
+
+== Future Enhancements
+
+Potential additions (documented in README.md):
+* Additional language translations
+* macOS kernel panic style
+* Linux kernel panic style
+* Custom color themes
+* Sound effects (optional)
+* Screenshot API endpoint
+* Social sharing buttons
+* BSOD history/gallery
+* WebSocket support for live updates
+
+== Code Quality
+
+=== Linting
+* ESLint configured
+* Standard code style
+* Auto-fix capability
+
+=== Testing
+* Jest test framework
+* Supertest for HTTP testing
+* Mocking for external dependencies
+* Coverage reporting
+
+=== Documentation
+* Inline JSDoc comments
+* README.md for users
+* API.md for API reference
+* CONTRIBUTING.md for contributors
+* This file (CLAUDE.md) for AI assistants
+
+== Security Considerations
+
+1. **No sensitive data** - All error messages are safe
+2. **Input sanitization** - Query params validated
+3. **Rate limiting** - Prevents abuse
+4. **Security headers** - Helmet.js protection
+5. **Non-root user** - Docker security
+6. **No eval/exec** - No dynamic code execution
+7. **Dependencies** - Regular updates needed
+
+== License
+
+MIT License - See LICENSE file
+
+== Maintenance
+
+=== Regular Tasks
+* Update dependencies monthly
+* Review and rotate logs
+* Monitor analytics for abuse
+* Review and merge PRs
+* Update documentation
+* Add new error messages
+* Improve test coverage
+
+=== Monitoring Checklist
+* Application uptime
+* Error rates in logs
+* Response times
+* Memory usage
+* API rate limit hits
+* Popular error codes
+* Style preferences
+
+== Conclusion
+
+Blue Screen of App has evolved from a simple concept into a comprehensive, production-ready application demonstrating:
+
+* **Clean Architecture** - Well-organized, modular code
+* **Best Practices** - Security, testing, documentation
+* **Scalability** - Docker, health checks, metrics
+* **Maintainability** - Clear structure, comprehensive docs
+* **User Experience** - Multiple styles, customization, API
+* **Developer Experience** - Good DX with tests, linting, clear code
+
+The application successfully balances humor with technical excellence, making it both fun to use and a solid example of modern Node.js development practices.
+
+---
+
+*Remember*: It's not a bug, it's a `CRITICAL_PROCESS_DIED` error! 💙
