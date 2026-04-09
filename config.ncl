@@ -377,20 +377,5 @@
     },
   },
 
-  # Export configuration for different formats
-  exports = {
-    # JSON export
-    toJSON = fun config =>
-      std.serialize 'Json config,
-
-    # YAML export (if needed)
-    toYAML = fun config =>
-      std.serialize 'Yaml config,
-
-    # Environment variables export
-    toEnv = fun config =>
-      "PORT=" ++ std.to_string config.server.port ++ "\n" ++
-      "HOST=" ++ config.server.host ++ "\n" ++
-      "NODE_ENV=" ++ config.server.env ++ "\n",
-  },
+  # Keep top-level config data serializable so build scripts can export directly.
 }
