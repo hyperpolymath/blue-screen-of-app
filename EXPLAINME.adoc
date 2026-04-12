@@ -1,0 +1,144 @@
+// SPDX-License-Identifier: PMPL-1.0-or-later
+// SPDX-FileCopyrightText: 2026 Jonathan D.A. Jewell <j.d.a.jewell@open.ac.uk>
+= Blue Screen of App — EXPLAINME
+:toc: preamble
+:icons: font
+
+This file maps README.adoc claims to their implementation evidence for
+sceptical developers.
+
+== "Four authentic BSOD styles (Win10, Win11, Win7, WinXP)"
+
+[quote, README.adoc]
+____
+A humorous web app displaying authentic Blue Screen of Death errors. Built with
+Deno, ReScript, and Podman.
+____
+
+How this is implemented::
+The ReScript business logic layer in link:src/[`src/`] defines four BSOD
+variants as algebraic data types. Each variant carries its own colour scheme,
+font metrics, and layout structure matching the authentic Windows BSOD of that
+era. The Deno server selects a variant (random or via query parameter) and
+serves the rendered HTML. See link:src/[`src/`] for the `BsodVariant` type
+definition.
+
+Caveat::
+"Authentic" refers to visual fidelity, not bug-for-bug reproduction. No actual
+Windows code is used. The Win10/Win11 designs are from memory and screenshot
+references.
+
+== "REST API with analytics"
+
+[quote, README.adoc]
+____
+REST API with analytics. Endpoints: /api/error, /api/codes, /api/health
+____
+
+How this is implemented::
+The Deno server exposes three API endpoints documented in
+link:API.adoc[`API.adoc`]. `/api/error` returns a random BSOD payload as JSON.
+`/api/codes` returns the full list of error codes. `/api/health` returns
+service status. Analytics are tracked in-memory (request counts, variant
+distribution) and returned via the health endpoint.
+
+Caveat::
+Analytics are in-memory only — restarting the server resets all counters.
+There is no persistent analytics store.
+
+== "QUIC/HTTP3 with HTTP/2 fallback"
+
+[quote, README.adoc]
+____
+QUIC/HTTP3/HTTP2/HTTP1.1 protocol support
+____
+
+How this is implemented::
+Protocol negotiation is handled by the Deno HTTPS server (Deno's built-in
+`Deno.listenTls`) combined with the container's QUIC configuration in
+link:config.ncl[`config.ncl`] (Nickel). The Nickel configuration exports to
+JSON which configures TLS and protocol preferences at startup.
+
+Caveat::
+QUIC/HTTP3 support depends on Deno's QUIC implementation maturity. At the
+time of writing, Deno's HTTP3 support is experimental. In practice, most
+connections will use HTTP/2 or HTTP/1.1.
+
+== "Rootless Podman containers"
+
+[quote, README.adoc]
+____
+Rootless Podman containers
+____
+
+How this is implemented::
+The link:Containerfile[`Containerfile`] (not `Dockerfile`) uses a
+Chainguard base image. The container runs as a non-root user. Deployment is
+via `just podman-run` which calls `podman run` without `sudo`.
+The link:DEPLOYMENT.adoc[`DEPLOYMENT.adoc`] guide covers the full rootless
+setup including port binding above 1024 for unprivileged users.
+
+Caveat::
+Port 443 requires either `sysctl net.ipv4.ip_unprivileged_port_start=443` or
+a port mapping from a higher port. The deployment guide explains both
+approaches.
+
+== "Nickel configuration language"
+
+[quote, README.adoc]
+____
+Config: Nickel → JSON export
+____
+
+How this is implemented::
+link:config.ncl[`config.ncl`] defines the application configuration schema in
+Nickel. At build time (`just build`), `nickel export` serialises it to
+`config.json` which the Deno server reads at startup. This keeps configuration
+type-safe and prevents invalid configurations from being deployed.
+
+Caveat::
+Nickel must be installed separately (it is not bundled with Deno). The
+`just build` recipe will fail if `nickel` is not on `PATH`.
+
+== Dogfooded Across The Account
+
+[cols="1,2,2", options="header"]
+|===
+| Technology / Pattern | Used here | Also used in
+
+| ReScript business logic
+| BSOD variant ADTs, type-safe rendering
+| link:https://github.com/hyperpolymath/gossamer[gossamer],
+  link:https://github.com/hyperpolymath/panll[panll]
+
+| Deno runtime (no Node.js)
+| HTTP server, test runner
+| link:https://github.com/hyperpolymath/boj-server[boj-server],
+  link:https://github.com/hyperpolymath/format-registrations[format-registrations]
+
+| Nickel configuration
+| `config.ncl` → `config.json` pipeline
+| link:https://github.com/hyperpolymath/standards[standards],
+  link:https://github.com/hyperpolymath/rsr-template-repo[rsr-template-repo]
+
+| Podman / Containerfile
+| Rootless container deployment
+| link:https://github.com/hyperpolymath/burble[burble],
+  link:https://github.com/hyperpolymath/stapeln[stapeln]
+
+| 100+ just recipes
+| Full development lifecycle
+| link:https://github.com/hyperpolymath/boj-server[boj-server] (similar recipe count)
+|===
+
+== Known Gaps
+
+[CAUTION]
+====
+The `rescript.json` in the repo root suggests a ReScript compiler configuration
+exists, but the migration from TypeScript/JavaScript to full ReScript may not
+be complete. Check link:RESCRIPT_MIGRATION.md[] for current status before
+treating all `src/` files as ReScript.
+====
+
+No other known gaps.
