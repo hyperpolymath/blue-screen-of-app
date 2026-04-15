@@ -1,3 +1,5 @@
+import? "contractile.just"
+
 # justfile for Blue Screen of App (Deno + Podman Edition)
 # Comprehensive build automation with 100+ recipes
 
