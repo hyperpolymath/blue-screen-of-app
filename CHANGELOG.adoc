@@ -12,7 +12,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * SECURITY.md with comprehensive security policies
 * MAINTAINERS.md with governance documentation
 * .well-known directory with RFC 9116 security.txt, ai.txt, humans.txt
-* justfile with 20+ build recipes for development tasks
+* Justfile with 20+ build recipes for development tasks
 * flake.nix for Nix reproducible builds
 * TPCF Perimeter 3 documentation for community contributions
 * JSDoc type annotations for improved type safety

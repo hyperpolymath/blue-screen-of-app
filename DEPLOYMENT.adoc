@@ -274,7 +274,7 @@ sudo firewall-cmd --reload
 # Test with curl (HTTP/3)
 curl --http3 https://localhost:443/api/health
 
-# Test with justfile
+# Test with Justfile
 just quic-test
 ----
 
@@ -479,7 +479,7 @@ just build
 # Cache dependencies
 deno cache src/server.js
 
-# Or use justfile
+# Or use Justfile
 just cache
 ----
 
