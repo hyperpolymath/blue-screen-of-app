@@ -1,4 +1,4 @@
-// SPDX-License-Identifier: PMPL-1.0-or-later
+// SPDX-License-Identifier: MPL-2.0
 // Integration-style tests for API logic (Deno-native, ESM)
 // Tests exercise the core modules used by the API routes without
 // spinning up the HTTP server, verifying the logic contract.

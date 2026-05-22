@@ -1,4 +1,4 @@
-# SPDX-License-Identifier: PMPL-1.0-or-later
+# SPDX-License-Identifier: MPL-2.0
 # AI Manifest for blue-screen-of-app
 # A2ML (AI Markup Language) universal entry point for AI agents.
 
@@ -19,7 +19,7 @@ ffi = "ffi/zig/"
 # Never place STATE.scm, META.scm, ECOSYSTEM.scm in repo root
 scm-files-in-machine-readable-only = true
 # Primary license
-license = "PMPL-1.0-or-later"
+license = "MPL-2.0"
 # No TypeScript — use ReScript
 no-typescript = true
 # No Node.js — use Deno

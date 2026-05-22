@@ -1,4 +1,4 @@
-// SPDX-License-Identifier: PMPL-1.0-or-later
+// SPDX-License-Identifier: MPL-2.0
 // Integration-style tests for BSOD route logic (Deno-native, ESM)
 // Tests verify module contracts without spinning up the HTTP server.
 import {
