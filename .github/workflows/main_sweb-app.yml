@@ -50,7 +50,7 @@ jobs:
         with:
           name: deno-app
 
-      - uses: azure/webapps-deploy@2fdd5c3ebb4f540834e86ecc1f6fdcd5539023ee # v3.0.2
+      - uses: azure/webapps-deploy@02a81bead70021f5284939794bcec79c271ab383 # v3.0.2
         id: deploy-to-webapp
         with:
           app-name: 'sweb-app'
