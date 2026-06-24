@@ -11,7 +11,6 @@ COPY deno.json deno.lock* ./
 
 # Copy source code
 COPY src/ ./src/
-COPY tests/ ./tests/
 
 # Cache dependencies
 RUN deno cache src/server.ts
