@@ -1,4 +1,4 @@
-// {{PROJECT}} FFI Build Configuration
+// BLUE_SCREEN_OF_APP FFI Build Configuration
 // SPDX-License-Identifier: MPL-2.0
 
 const std = @import("std");
