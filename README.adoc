@@ -10,7 +10,7 @@ image:https://img.shields.io/badge/License-MPL--2.0-blue.svg[License: PMPL-1.0,l
 [.lead]
 _Does exactly what it says on the tin... or screen._
 
-A humorous web app displaying authentic Blue Screen of Death errors. Built with *Deno*, *ReScript*, and *Podman*.
+A humorous web app displaying authentic Blue Screen of Death errors. Built with *Deno*, *AffineScript*, and *Podman*.
 
 image:https://img.shields.io/badge/License-MPL--2.0-blue.svg[License: PMPL-1.0,link="https://github.com/hyperpolymath/palimpsest-license"]
 image:https://img.shields.io/badge/deno-2.0-brightgreen[Deno]
@@ -21,7 +21,7 @@ image:https://img.shields.io/badge/RSR-Bronze-orange[RSR]
 [source,bash]
 ----
 ./scripts/bootstrap.sh  # Install Deno, Podman, Just
-just build              # Compile ReScript + export config
+just build              # Compile AffineScript + export config
 just podman-run         # Deploy container
 # Visit https://localhost:443
 ----
@@ -39,7 +39,7 @@ just podman-run         # Deploy container
 == Architecture
 
 * *Runtime*: Deno (no Node.js, no npm)
-* *Business Logic*: ReScript (type-safe)
+* *Business Logic*: AffineScript (type-safe)
 * *Server*: Minimal JavaScript glue code
 * *Containers*: Podman (rootless)
 * *Protocols*: QUIC/HTTP3/HTTP2/HTTP1.1

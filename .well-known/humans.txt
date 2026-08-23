@@ -55,7 +55,7 @@ Build Tools:
     Docker Compose - Container orchestration
     npm - Package management
     just - Command runner
-    Nix - Reproducible builds
+    Guix - Reproducible builds
 
 CI/CD:
     GitHub Actions - Continuous integration

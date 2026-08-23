@@ -6,7 +6,7 @@
 version = "1.0"
 repo = "blue-screen-of-app"
 owner = "hyperpolymath"
-purpose = "Humorous BSOD web application in Deno + ReScript"
+purpose = "Humorous BSOD web application in Deno + AffineScript"
 
 [canonical-locations]
 machine-readable = ".machine_readable/"
@@ -20,7 +20,7 @@ ffi = "ffi/zig/"
 scm-files-in-machine-readable-only = true
 # Primary license
 license = "MPL-2.0"
-# No TypeScript — use ReScript
+# No TypeScript — use AffineScript
 no-typescript = true
 # No Node.js — use Deno
 no-nodejs = true
@@ -28,7 +28,7 @@ no-nodejs = true
 container-tool = "podman"
 
 [structure]
-# Source: Deno + ReScript compiled to .bs.js
+# Source: Deno + AffineScript compiled to .bs.js
 # FFI: Zig (ffi/zig/)
 # ABI: Idris2 (src/abi/)
 # Config: Nickel (config.ncl)

@@ -30,7 +30,7 @@ This will automatically install:
 * Podman (if not present)
 * Just command runner
 * Deno runtime
-* ReScript compiler (optional, for development)
+* AffineScript compiler (optional, for development)
 * Nickel (optional, for config editing)
 
 == Build Process
@@ -39,7 +39,7 @@ This will automatically install:
 
 [source,bash]
 ----
-# Build everything (ReScript + config export)
+# Build everything (AffineScript + config export)
 just build
 
 # Or manually:
@@ -48,7 +48,7 @@ bash scripts/build.sh
 
 This script:
 
-1. Compiles ReScript (.res → .bs.js)
+1. Compiles AffineScript (.res → .bs.js)
 2. Exports Nickel config to JSON
 3. Validates build outputs
 
@@ -199,23 +199,23 @@ sudo systemctl status blue-screen-of-app
 sudo journalctl -u blue-screen-of-app -f
 ----
 
-=== Method 4: Nix Flakes (Reproducible)
+=== Method 4: Guix Flakes (Reproducible)
 
-If you have Nix with flakes enabled:
+If you have Guix with flakes enabled:
 
 [source,bash]
 ----
-# Build with Nix
-nix build
+# Build with Guix
+guix build
 
-# Run with Nix
-nix run
+# Run with Guix
+guix run
 
 # Enter development shell
-nix develop
+guix develop
 
-# Build Docker image with Nix
-nix build .#dockerImage
+# Build Docker image with Guix
+guix build .#dockerImage
 ----
 
 == QUIC/HTTP3 Configuration
@@ -450,19 +450,19 @@ PORT=8443 deno task start
 just podman-run
 ----
 
-=== ReScript Compilation Failed
+=== AffineScript Compilation Failed
 
-*Problem*: ReScript not installed or compilation fails
+*Problem*: AffineScript not installed or compilation fails
 
 *Solutions*:
 
 [source,bash]
 ----
-# Install ReScript globally
-npm install -g rescript
+# Install AffineScript globally
+npm install -g affinescript
 
 # Or use the stub files (already included)
-# The .bs.js stub files allow testing without ReScript
+# The .bs.js stub files allow testing without AffineScript
 
 # Rebuild
 just build

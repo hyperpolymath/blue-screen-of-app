@@ -10,7 +10,7 @@
 4. Static Analysis: Verified with `panic-attack assail`.
 
 ## Findings Summary
-- flake.nix declares inputs without narHash, rev pinning, or sibling flake.lock — dependency revision is unpinned in flake.nix
+- flake.guix declares inputs without narHash, rev pinning, or sibling flake.lock — dependency revision is unpinned in flake.guix
 - 14 TODO/FIXME/HACK markers in contractiles/k9/template-hunt.k9.ncl
 
 ## Final Grade

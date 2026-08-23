@@ -2,8 +2,8 @@
 git clone https://github.com/hyperpolymath/blue-screen-of-app.git
 cd blue-screen-of-app
 
-# Using Nix (recommended for reproducibility)
-nix develop
+# Using Guix (recommended for reproducibility)
+guix develop
 
 # Or using toolbox/distrobox
 toolbox create blue-screen-of-app-dev
@@ -41,7 +41,7 @@ blue-screen-of-app/
 ├── MAINTAINERS.md
 ├── README.adoc
 ├── SECURITY.md
-├── flake.nix            # Nix flake (Perimeter 1)
+├── flake.guix            # Guix flake (Perimeter 1)
 └── Justfile             # Task runner (Perimeter 1)
 ```
 
