@@ -1,0 +1,155 @@
+== Security Policy
+
+=== Supported Versions
+
+We release patches for security vulnerabilities in the following
+versions:
+
+[cols=",",options="header",]
+|===
+|Version |Supported
+|1.0.x |:white_check_mark:
+|< 1.0 |:x:
+|===
+
+=== Reporting a Vulnerability
+
+We take the security of Blue Screen of App seriously. If you believe you
+have found a security vulnerability, please report it to us as described
+below.
+
+==== Where to Report
+
+*Please do NOT report security vulnerabilities through public GitHub
+issues.*
+
+Instead, please report them via one of these methods:
+
+[arabic]
+. *Preferred*: Use GitHub’s private vulnerability reporting feature
+. *Email*: Send details to [security contact - update with actual email]
+. *Security.txt*: See `+.well-known/security.txt+` for additional
+contact methods
+
+==== What to Include
+
+Please include the following information in your report:
+
+* Type of vulnerability (e.g., XSS, injection, authentication bypass)
+* Full paths of source file(s) related to the vulnerability
+* Location of the affected source code (tag/branch/commit or direct URL)
+* Step-by-step instructions to reproduce the issue
+* Proof-of-concept or exploit code (if possible)
+* Impact of the issue, including how an attacker might exploit it
+
+==== Response Timeline
+
+* *Initial Response*: Within 48 hours
+* *Status Update*: Within 7 days
+* *Fix Timeline*: Depends on severity
+** Critical: 7-14 days
+** High: 14-30 days
+** Medium: 30-60 days
+** Low: 60-90 days
+
+==== What to Expect
+
+[arabic]
+. *Acknowledgment*: We’ll confirm receipt of your vulnerability report
+. *Investigation*: We’ll investigate and validate the report
+. *Resolution*: We’ll develop and test a fix
+. *Disclosure*: We’ll coordinate disclosure timing with you
+. *Credit*: We’ll credit you in the security advisory (unless you prefer
+anonymity)
+
+=== Security Measures
+
+==== Current Security Features
+
+[arabic]
+. *Helmet.js*: Security headers (XSS protection, MIME sniffing
+prevention)
+. *Rate Limiting*: API endpoints limited to 100 requests per 15 minutes
+per IP
+. *CORS*: Configurable cross-origin resource sharing
+. *Input Validation*: All query parameters sanitized
+. *Error Handling*: No sensitive information leaked in error responses
+. *Dependencies*: Zero npm dependencies, pure Deno
+. *Container Security*: Rootless Podman, minimal base image
+. *No Secrets*: No hardcoded credentials or API keys
+
+==== Security Best Practices
+
+When using this application:
+
+[arabic]
+. *Environment Variables*: Never commit `+.env+` files with secrets
+. *HTTPS*: Always use HTTPS in production
+. *Updates*: Keep Deno updated (`+deno upgrade+`)
+. *Logging*: Review logs regularly for suspicious activity
+. *Rate Limiting*: Adjust rate limits based on your traffic patterns
+. *CORS*: Restrict origins in production environments
+
+=== Known Security Considerations
+
+==== Non-Issues (By Design)
+
+[arabic]
+. *No Authentication*: This is a public demo application
+. *Open CORS*: Default allows all origins (configure for production)
+. *No Data Storage*: No user data is stored or transmitted
+. *Humorous Content*: Error messages are jokes, not real system errors
+
+==== Potential Risks
+
+[arabic]
+. *Phishing*: Could be used in social engineering attacks
+* *Mitigation*: Clear documentation that this is a demo/joke app
+. *Resource Exhaustion*: API calls could consume server resources
+* *Mitigation*: Rate limiting enabled by default
+. *XSS in Custom Messages*: Custom error messages rendered in HTML
+* *Mitigation*: EJS auto-escapes all variables
+
+=== Security Audit History
+
+[width="100%",cols="16%,22%,17%,25%,20%",options="header",]
+|===
+|Date |Auditor |Scope |Findings |Status
+|2025-01-15 |Internal |Initial Security Review |0 Critical, 0 High
+|Resolved
+|===
+
+=== Compliance
+
+* *OWASP Top 10*: Addressed in design
+* *CWE Top 25*: No known vulnerabilities
+* *RFC 9116*: security.txt implemented
+
+=== Attribution
+
+We follow coordinated disclosure and will credit security researchers
+who report vulnerabilities responsibly.
+
+==== Hall of Fame
+
+_(No reports yet - this section will be updated as security researchers
+contribute)_
+
+=== Additional Resources
+
+* https://owasp.org/www-project-top-ten/[OWASP Top 10]
+* https://nodejs.org/en/docs/guides/security/[Node.js Security Best
+Practices]
+* https://expressjs.com/en/advanced/best-practice-security.html[Express
+Security Best Practices]
+
+=== Policy Updates
+
+This security policy is reviewed quarterly and updated as needed. Last
+update: 2025-01-15
+
+'''''
+
+*Remember*: This is a demonstration application for humorous purposes.
+While we take security seriously, please use common sense when deploying
+or customizing it.
