@@ -16,8 +16,8 @@ fail() { echo "FAIL: $1"; FAIL=$((FAIL + 1)); }
 # Required documentation files
 [ -f README.adoc ] && pass "README.adoc present" || fail "README.adoc missing"
 [ -f LICENSE ] && pass "LICENSE present" || fail "LICENSE missing"
-[ -f SECURITY.md ] && pass "SECURITY.md present" || fail "SECURITY.md missing"
-[ -f ABI-FFI-README.md ] && pass "ABI-FFI-README.md present" || fail "ABI-FFI-README.md missing"
+[ -f SECURITY.adoc ] && pass "SECURITY.adoc present" || fail "SECURITY.adoc missing"
+[ -f ABI-FFI-README.adoc ] && pass "ABI-FFI-README.adoc present" || fail "ABI-FFI-README.adoc missing"
 
 # AI manifest (0-AI-MANIFEST.a2ml OR AI.a2ml)
 if [ -f 0-AI-MANIFEST.a2ml ] || [ -f AI.a2ml ]; then

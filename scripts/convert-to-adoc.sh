@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # Convert Markdown files to AsciiDoc
-# Keeps SECURITY.md and LICENSE files as-is per requirements
+# Keeps SECURITY.adoc and LICENSE files as-is per requirements
 
 set -euo pipefail
 
@@ -78,7 +78,7 @@ done
 
 echo ""
 echo "Kept as Markdown (per requirements):"
-echo "  • SECURITY.md"
+echo "  • SECURITY.adoc"
 echo "  • LICENSE"
 echo ""
 echo "Original .md files backed up with .md.bak extension"
