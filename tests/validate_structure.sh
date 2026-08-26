@@ -14,10 +14,26 @@ pass() { echo "PASS: $1"; PASS=$((PASS + 1)); }
 fail() { echo "FAIL: $1"; FAIL=$((FAIL + 1)); }
 
 # Required documentation files
-[ -f README.adoc ] && pass "README.adoc present" || fail "README.adoc missing"
-[ -f LICENSE ] && pass "LICENSE present" || fail "LICENSE missing"
-[ -f SECURITY.adoc ] && pass "SECURITY.adoc present" || fail "SECURITY.adoc missing"
-[ -f ABI-FFI-README.adoc ] && pass "ABI-FFI-README.adoc present" || fail "ABI-FFI-README.adoc missing"
+if [ -f README.adoc ]; then
+  pass "README.adoc present"
+else
+  fail "README.adoc missing"
+fi
+if [ -f LICENSE ]; then
+  pass "LICENSE present"
+else
+  fail "LICENSE missing"
+fi
+if [ -f SECURITY.adoc ]; then
+  pass "SECURITY.adoc present"
+else
+  fail "SECURITY.adoc missing"
+fi
+if [ -f ABI-FFI-README.adoc ]; then
+  pass "ABI-FFI-README.adoc present"
+else
+  fail "ABI-FFI-README.adoc missing"
+fi
 
 # AI manifest (0-AI-MANIFEST.a2ml OR AI.a2ml)
 if [ -f 0-AI-MANIFEST.a2ml ] || [ -f AI.a2ml ]; then
@@ -35,10 +51,18 @@ else
 fi
 
 # Tests directory
-[ -d tests ] && pass "tests/ directory present" || fail "tests/ directory missing"
+if [ -d tests ]; then
+  pass "tests/ directory present"
+else
+  fail "tests/ directory missing"
+fi
 
 # Containerfile (Podman)
-[ -f Containerfile ] && pass "Containerfile present" || fail "Containerfile missing"
+if [ -f Containerfile ]; then
+  pass "Containerfile present"
+else
+  fail "Containerfile missing"
+fi
 
 # Summary
 echo ""
