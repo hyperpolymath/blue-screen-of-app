@@ -1,5 +1,6 @@
 # SPDX-License-Identifier: MPL-2.0
 # This workflow is managed by gh actions-lock.
+# This workflow is managed by gh actions-lock.
 # Simple workflow for deploying static content to GitHub Pages
 name: Deploy static content to Pages
 
