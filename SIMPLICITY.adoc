@@ -14,11 +14,11 @@
   - Configuration management
   - QR code generation (SVG, one-liner)
 
-* `src/ErrorMessages.bs.js` - **91 lines** (ReScript stub)
+* `src/ErrorMessages.bs.js` - **91 lines** (AffineScript stub)
   - 27 error codes
   - Random selection logic
 
-* `src/Analytics.bs.js` - **58 lines** (ReScript stub)
+* `src/Analytics.bs.js` - **58 lines** (AffineScript stub)
   - Visit tracking
   - Statistics aggregation
 
@@ -75,7 +75,7 @@ For comparison:
 == What Remains
 
 ✅ **One** web server file (**88 lines**, highly optimized)
-✅ **Two** ReScript stubs (149 lines combined)
+✅ **Two** AffineScript stubs (149 lines combined)
 ✅ **One** tiny build script (21 lines)
 ✅ **Zero** external JS dependencies
 ✅ **Zero** npm/node

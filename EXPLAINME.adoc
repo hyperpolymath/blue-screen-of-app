@@ -12,11 +12,11 @@ sceptical developers.
 [quote, README.adoc]
 ____
 A humorous web app displaying authentic Blue Screen of Death errors. Built with
-Deno, ReScript, and Podman.
+Deno, AffineScript, and Podman.
 ____
 
 How this is implemented::
-The ReScript business logic layer in link:src/[`src/`] defines four BSOD
+The AffineScript business logic layer in link:src/[`src/`] defines four BSOD
 variants as algebraic data types. Each variant carries its own colour scheme,
 font metrics, and layout structure matching the authentic Windows BSOD of that
 era. The Deno server selects a variant (random or via query parameter) and
@@ -106,7 +106,7 @@ Nickel must be installed separately (it is not bundled with Deno). The
 |===
 | Technology / Pattern | Used here | Also used in
 
-| ReScript business logic
+| AffineScript business logic
 | BSOD variant ADTs, type-safe rendering
 | link:https://github.com/hyperpolymath/gossamer[gossamer],
   link:https://github.com/hyperpolymath/panll[panll]
@@ -135,10 +135,10 @@ Nickel must be installed separately (it is not bundled with Deno). The
 
 [CAUTION]
 ====
-The `rescript.json` in the repo root suggests a ReScript compiler configuration
-exists, but the migration from TypeScript/JavaScript to full ReScript may not
+The `affinescript.json` in the repo root suggests a AffineScript compiler configuration
+exists, but the migration from TypeScript/JavaScript to full AffineScript may not
 be complete. Check link:RESCRIPT_MIGRATION.md[] for current status before
-treating all `src/` files as ReScript.
+treating all `src/` files as AffineScript.
 ====
 
 No other known gaps.

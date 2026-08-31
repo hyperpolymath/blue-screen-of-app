@@ -1,7 +1,12 @@
+// SPDX-License-Identifier: MPL-2.0
+// Ported via Harvard Engine (Semantic pass)
+
+module ErrorMessages;
+
 // Blue Screen of App - Error Messages Module (ReScript)
 // Humorous and creative BSOD error messages
 
-type errorData = {
+struct errorData { {
   stopCode: string,
   description: string,
   technicalDetail: string,
@@ -9,7 +14,7 @@ type errorData = {
   percentage: int,
 }
 
-let stopCodes = [
+fn stopCodes = [
   "CRITICAL_PROCESS_DIED",
   "SYSTEM_SERVICE_EXCEPTION",
   "PAGE_FAULT_IN_NONPAGED_AREA",
@@ -39,7 +44,7 @@ let stopCodes = [
   "REGEX_PARSER_GAVE_UP",
 ]
 
-let descriptions = Js.Dict.fromArray([
+fn descriptions = Js.Dict.fromArray([
   ("CRITICAL_PROCESS_DIED", "Your PC ran into a problem and needs to restart. We're just collecting some error info, and then we'll restart for you."),
   ("EXCESSIVE_MEME_EXPOSURE", "Your system has been exposed to an unsafe level of dank memes. Please close all meme applications and restart."),
   ("COFFEE_NOT_FOUND", "Critical system resource COFFEE.SYS not found. Please insert coffee and press any key to continue."),
@@ -61,7 +66,7 @@ let descriptions = Js.Dict.fromArray([
   ("REGEX_PARSER_GAVE_UP", "Regular expression too complex. Even the parser doesn't know what you're trying to match."),
 ])
 
-let technicalDetails = [
+fn technicalDetails = [
   "Failed driver: SARCASM.SYS",
   "Failed driver: PROCRASTINATION.DLL",
   "Failed driver: MONDAY.SYS",
@@ -76,7 +81,7 @@ let technicalDetails = [
   "Error code: 500 (Internal existential crisis)",
 ]
 
-let qrMessages = [
+fn qrMessages = [
   "Scan for totally legitimate Windows support",
   "Scan for cat pictures",
   "Scan for more information (it won't help)",
@@ -87,23 +92,23 @@ let qrMessages = [
 ]
 
 // Get random element from array
-let randomElement = (arr: array<'a>): 'a => {
-  let index = Js.Math.random_int(0, Array.length(arr))
+fn randomElement = (arr: array<'a>): 'a => {
+  fn index = Js.Math.random_int(0, Array.length(arr))
   arr[index]
 }
 
 // Get a random error message configuration
-let getRandomError = (): errorData => {
-  let stopCode = randomElement(stopCodes)
+fn getRandomError = (): errorData => {
+  fn stopCode = randomElement(stopCodes)
 
-  let description = switch Js.Dict.get(descriptions, stopCode) {
+  fn description = switch Js.Dict.get(descriptions, stopCode) {
   | Some(desc) => desc
   | None => Js.Dict.get(descriptions, "CRITICAL_PROCESS_DIED")->Belt.Option.getWithDefault("")
   }
 
-  let technicalDetail = randomElement(technicalDetails)
-  let qrMessage = randomElement(qrMessages)
-  let percentage = Js.Math.random_int(0, 101)
+  fn technicalDetail = randomElement(technicalDetails)
+  fn qrMessage = randomElement(qrMessages)
+  fn percentage = Js.Math.random_int(0, 101)
 
   {
     stopCode: stopCode,
@@ -115,22 +120,22 @@ let getRandomError = (): errorData => {
 }
 
 // Get a specific error by stop code
-let getErrorByCode = (code: string): option<errorData> => {
-  let normalizedCode = code
+fn getErrorByCode = (code: string): option<errorData> => {
+  fn normalizedCode = code
     ->Js.String2.toUpperCase
     ->Js.String2.replaceByRe(%re("/-/g"), "_")
 
   if !Array.some(stopCodes, c => c == normalizedCode) {
     None
   } else {
-    let description = switch Js.Dict.get(descriptions, normalizedCode) {
+    fn description = switch Js.Dict.get(descriptions, normalizedCode) {
     | Some(desc) => desc
     | None => Js.Dict.get(descriptions, "CRITICAL_PROCESS_DIED")->Belt.Option.getWithDefault("")
     }
 
-    let technicalDetail = randomElement(technicalDetails)
-    let qrMessage = randomElement(qrMessages)
-    let percentage = Js.Math.random_int(0, 101)
+    fn technicalDetail = randomElement(technicalDetails)
+    fn qrMessage = randomElement(qrMessages)
+    fn percentage = Js.Math.random_int(0, 101)
 
     Some({
       stopCode: normalizedCode,
@@ -144,15 +149,16 @@ let getErrorByCode = (code: string): option<errorData> => {
 
 // Export functions for use from JavaScript/Deno
 @genType
-let getAllStopCodes = (): array<string> => stopCodes
+fn getAllStopCodes = (): array<string> => stopCodes
 
 @genType
-let getRandomErrorJS = (): errorData => getRandomError()
+fn getRandomErrorJS = (): errorData => getRandomError()
 
 @genType
-let getErrorByCodeJS = (code: string): Js.Nullable.t<errorData> => {
+fn getErrorByCodeJS = (code: string): Js.Nullable.t<errorData> => {
   switch getErrorByCode(code) {
   | Some(error) => Js.Nullable.return(error)
   | None => Js.Nullable.null
   }
 }
+

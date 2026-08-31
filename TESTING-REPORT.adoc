@@ -404,7 +404,7 @@ tests/integration/bsod.test.js
 
 === Short-term
 
-1. **Add SPDX headers to source files**: The ReScript-generated `.bs.js` files lack SPDX license headers. Consider adding them during build or using a post-processing script.
+1. **Add SPDX headers to source files**: The AffineScript-generated `.bs.js` files lack SPDX license headers. Consider adding them during build or using a post-processing script.
 
 2. **Increase branch coverage**: The ErrorMessages module has 75% branch coverage. Add tests for edge cases to improve coverage.
 
@@ -412,7 +412,7 @@ tests/integration/bsod.test.js
 
 === Long-term
 
-1. **ReScript source files**: The project references ReScript but `.res` source files are missing. Either add the ReScript sources or document that the `.bs.js` files are the primary sources.
+1. **AffineScript source files**: The project references AffineScript but `.res` source files are missing. Either add the AffineScript sources or document that the `.bs.js` files are the primary sources.
 
 2. **End-to-end tests**: Add browser-based E2E tests using Deno with Puppeteer or Playwright to verify the visual rendering of BSOD pages.
 

@@ -13,7 +13,7 @@ This document describes the Rhodium Standard Repository (RSR) compliance status 
 |Attribute |Value
 
 |Project |Blue-Screen-of-App
-|Primary Language |rescript
+|Primary Language |affinescript
 |RSR Tier |1
 |Compliance Status |Compliant
 |Last Updated |2025-12-10
@@ -27,17 +27,17 @@ This document describes the Rhodium Standard Repository (RSR) compliance status 
 * Zig
 * Ada
 * Haskell
-* ReScript
+* AffineScript
 
 === Tier 2 Languages (Acceptable)
 * Nickel (configuration)
 * Racket (scripting)
 * Guile Scheme (state management)
-* Nix (derivations)
+* Guix (derivations)
 
 === Restricted Languages
 * Python - Only allowed in salt/ directories for SaltStack
-* TypeScript/JavaScript - Legacy only, convert to ReScript
+* TypeScript/JavaScript - Legacy only, convert to AffineScript
 * CUE - Not permitted, use Nickel or Guile
 
 == Compliance Checklist
@@ -46,14 +46,14 @@ This document describes the Rhodium Standard Repository (RSR) compliance status 
 |===
 |Requirement |Status |Notes
 
-|Primary language is Tier 1/2 |✓ |rescript
+|Primary language is Tier 1/2 |✓ |affinescript
 |No restricted languages outside exemptions |✓ |
 |.editorconfig present |✓ |
 |.well-known/ directory |✓ |
 |justfile present |✓ |
 |LICENSE.txt (AGPL + Palimpsest) |✓ |
 |Containerfile present |✓ |
-|flake.nix present |✓ |
+|flake.guix present |✓ |
 |===
 
 == Exemptions

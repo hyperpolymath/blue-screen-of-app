@@ -1,5 +1,6 @@
 # SPDX-License-Identifier: MPL-2.0
 # This workflow is managed by gh actions-lock.
+# This workflow is managed by gh actions-lock.
 # CI/CD Workflow for Blue Screen of App (Deno + Podman)
 name: CI/CD
 
@@ -38,7 +39,7 @@ jobs:
       - name: Format check
         run: deno fmt --check src/server.js || true
 
-      - name: Build (compile ReScript + export config)
+      - name: Build (compile AffineScript + export config)
         run: |
           # Create default config.json
           cat > config.json <<'EOF'
@@ -49,8 +50,8 @@ jobs:
           }
           EOF
 
-          # ReScript compilation (skip if not installed)
-          echo "ReScript compilation skipped (using .bs.js stubs)"
+          # AffineScript compilation (skip if not installed)
+          echo "AffineScript compilation skipped (using .bs.js stubs)"
 
       - name: Run tests (if available)
         run: deno test --allow-net --allow-read --allow-env || echo "No tests yet"
