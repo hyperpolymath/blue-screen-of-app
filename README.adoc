@@ -71,7 +71,7 @@ See link:API.adoc[API Documentation].
 
 == Contributing
 
-See link:CONTRIBUTING.adoc[Contributing] and link:TPCF.adoc[TPCF].
+See link:.github/CONTRIBUTING.md[Contributing] and link:TPCF.adoc[TPCF].
 
 == License
 
